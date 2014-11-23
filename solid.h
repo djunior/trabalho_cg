@@ -7,9 +7,10 @@
 
 class Solid{
 private:
-	float x,y,z,width,height,length;
 
 public:
+	float x,y,z,width,height,length;
+
 	Solid();
 	Solid(float,float,float);
 	Solid(float,float,float,float,float,float);
@@ -21,6 +22,8 @@ public:
 
 	void setColor(float,float,float);
 	void draw();
+
+	bool hit(float, float, float);
 };
 
 #endif

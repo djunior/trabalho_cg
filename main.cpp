@@ -1,10 +1,7 @@
-#include <iostream>
-#include <GL/glut.h>
+#include "utils.h"
+
 #include <vector>
 #include <array>
-
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 #include "solid.h"
 #include "scene.h"
@@ -24,18 +21,22 @@ void SceneDraw(){
 	scene.draw();
 }
 
+bool checkCollision(float x, float y, float z){
+	return scene.checkCollision(x,y,z);
+}
+
 void KeyHandler(unsigned char key,int x, int y){
 
 	Camera* c = scene.getCamera();
 
 	if (key == 'w'){
-		c->moveForward();
+		c->moveForward(checkCollision);
 	} else if ( key == 's') {
-		c->moveBackward();
+		c->moveBackward(checkCollision);
 	} else if ( key == 'a') {
-		c->moveLeft();
+		c->moveLeft(checkCollision);
 	} else if ( key == 'd') {
-		c->moveRight();
+		c->moveRight(checkCollision);
 	}
 
 	glutPostRedisplay();
@@ -45,7 +46,7 @@ void MotionHandler(int x, int y){
 
 	Camera* c = scene.getCamera();
 
-	c->setFocus(x,y);
+	c->setFocusPosition(x,y);
 
 	glutPostRedisplay();
 }
@@ -81,7 +82,7 @@ void setupLight(){
 
 int main(int argc, char** argv){
 	std::cout << "Iniciando Hello World..." << std::endl;
-	
+
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(roomW*2,roomL*2);
@@ -106,6 +107,7 @@ int main(int argc, char** argv){
 	//setupLight();
 
 	scene.setBounds(roomW,roomH,roomL);
+	scene.setMode(SCENE_MODE_NAVIGATION);
 	scene.init();
 
 	//Armario
@@ -153,7 +155,11 @@ int main(int argc, char** argv){
 	//glutReshapeFunc(Reshape);
 	glutKeyboardFunc(KeyHandler);
 	glutPassiveMotionFunc(MotionHandler);
-	glutMainLoop();
 
+	// std::cout << "Colision? " << scene.checkCollision(0.0,0.0,0.0) << std::endl;
+	// Solid s(0.0,0.0,0.0,1.0,1.0,1.0);
+	// std::cout << "Solid collision? " << s.hit(0.5,0.5,1.5) << std::endl;
+
+	glutMainLoop();
 	return 0;
 }

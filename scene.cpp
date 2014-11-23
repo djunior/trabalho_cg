@@ -11,10 +11,36 @@ Scene::Scene(){
 
 Scene::Scene(float w, float h, float l){
 	setBounds(w,h,l);
+	mode = SCENE_MODE_NAVIGATION;
 }
 
 Scene::~Scene(){
+	solidList.clear();
 
+	for (int i = 0; i<9; i++)
+		quadrantList[i].clear();
+}
+
+int Scene::checkQuadrant(float x, float y, float z){
+	int index = 0;
+
+	if (x < width/3)
+		index = 0;
+	else if (x < 2*width/3)
+		index = 1;
+	else
+		index = 2;
+
+	if (z < length/3)
+		index += 0;
+	else if (z < 2*length/3)
+		index += 3;
+	else
+		index += 6;
+
+	std::cout << "Scene::checkQuadrant() x,y,z = (" << x << "," << y << "," << z << ") index = " << index << std::endl;
+
+	return index;
 }
 
 void Scene::setBounds(float w, float h, float l){
@@ -33,6 +59,29 @@ SceneMode Scene::getMode(){
 
 void Scene::addSolid(Solid * s){
 	solidList.push_back(s);
+
+	int index = checkQuadrant(s->x, s->y, s->z);
+	int secondIndex = checkQuadrant(s->x + s->width, s->y, s->z);
+	int thirdIndex = checkQuadrant(s->x, s->y, s->z+s->length);
+
+	for (int i = index; i <= secondIndex; i++){
+		for (int j = index; j <= thirdIndex; j += 3){
+			// std::cout << "Adicionando solido ao quadrante " << i+j-index << std::endl;
+			quadrantList[i+j-index].push_back(s);
+		}
+	}
+
+}
+
+bool Scene::checkCollision(float x, float y, float z){
+	int index = checkQuadrant(x,y,z);
+
+	for (std::vector<Solid*>::iterator it = quadrantList[index].begin(); it != quadrantList[index].end(); it++){
+		if ((*it)->hit(x,y,z))
+			return true;
+	}
+
+	return false;
 }
 
 void Scene::applyPerspective(){
@@ -49,7 +98,8 @@ void Scene::applyPerspective(){
 void Scene::init(){
 	camera.setMode(mode);
 	camera.setScreenBounds(0, 0, width*2, height*2);
-	camera.setPosition(1.0,180/length,1.0);
+	camera.setPosition(-width/2,180/height,length/2);
+	camera.setSceneBounds(width,height,length);
 }
 
 void Scene::draw(){

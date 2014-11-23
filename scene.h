@@ -21,13 +21,17 @@ public:
 	void init();
 	void setScreenPosition();	
 	void setBounds(float,float,float);
+	bool checkCollision(float,float,float);
 	Camera* getCamera();
 private:
-	void applyPerspective();
+	
 	SceneMode mode;
-	std::vector<Solid *> solidList;
+	std::vector<Solid *> solidList, quadrantList[9];
 	float screenX, screenY, width,height,length;
 	Camera camera;
+
+	void applyPerspective();
+	int checkQuadrant(float,float,float);
 };
 
 #endif

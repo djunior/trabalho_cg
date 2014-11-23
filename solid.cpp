@@ -23,6 +23,21 @@ Solid::Solid(float x,float y,float z,float w, float h, float l){
 	setPosition(x,y,z);
 }
 
+bool Solid::hit(float testX, float testY, float testZ){
+	bool hitX = false, hitY = false, hitZ = false;
+
+	if (testX >= x && testX <= x+width)
+		hitX = true;
+
+	if (testY >= y && testY <= y+height)
+		hitY = true;
+
+	if (testZ >= z && testZ <= z+length)
+		hitZ = true;
+
+	return hitX && hitY && hitZ;
+}
+
 void Solid::setPosition(float _x, float _y, float _z){
 	x = _x;
 	y = _y;
