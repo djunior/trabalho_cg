@@ -21,8 +21,10 @@ public:
 	void init();
 	void setScreenPosition();	
 	void setBounds(float,float,float);
+	void getBounds(float*,float*,float*);
 	bool checkCollision(float,float,float);
 	Camera* getCamera();
+	void clear();
 private:
 	
 	SceneMode mode;

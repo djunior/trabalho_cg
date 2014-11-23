@@ -49,8 +49,15 @@ void Scene::setBounds(float w, float h, float l){
 	length = l;	
 }
 
+void Scene::getBounds(float*w,float*h,float*l){
+	*w = width;
+	*h = height;
+	*l = length;
+}
+
 void Scene::setMode(SceneMode m){
 	mode = m;
+	camera.setMode(mode);
 }
 
 SceneMode Scene::getMode(){
@@ -82,6 +89,10 @@ bool Scene::checkCollision(float x, float y, float z){
 	}
 
 	return false;
+}
+
+void Scene::clear(){
+	solidList.clear();
 }
 
 void Scene::applyPerspective(){
@@ -142,6 +153,10 @@ void Scene::draw(){
 	}
 
 	glPopMatrix();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	
 	glutSwapBuffers();
 
 }

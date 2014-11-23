@@ -6,10 +6,15 @@
 #include "solid.h"
 #include "scene.h"
 
+#include "editor.h"
+
 int w = 720, h = 480;
 int roomW = 284, roomL = 308, roomH = 250;
 
 Scene scene;
+Editor editor;
+
+bool isEditing = true;
 
 void Reshape(int width,int height){
 	glViewport(0,0,width,height);
@@ -18,7 +23,10 @@ void Reshape(int width,int height){
 }
 
 void SceneDraw(){
-	scene.draw();
+	if (isEditing)
+		editor.draw();
+	else
+		scene.draw();
 }
 
 bool checkCollision(float x, float y, float z){
@@ -26,6 +34,30 @@ bool checkCollision(float x, float y, float z){
 }
 
 void KeyHandler(unsigned char key,int x, int y){
+
+	if (key == 'e'){
+		isEditing = ! isEditing;
+		glutPostRedisplay();
+		return;
+	}
+
+	if (isEditing){
+
+		if (key == 'i')
+			editor.createSolid(100,100,100);
+		else if(key == 't')
+			editor.setSceneMode(SCENE_MODE_TOP);
+		else if(key == 'r')
+			editor.setSceneMode(SCENE_MODE_RIGHT);
+		else if (key == 'p')
+			editor.setSceneMode(SCENE_MODE_ISOMERIC);
+		else if (key == 'd')
+			editor.finalize();
+
+		glutPostRedisplay();
+
+		return;
+	}
 
 	Camera* c = scene.getCamera();
 
@@ -43,6 +75,12 @@ void KeyHandler(unsigned char key,int x, int y){
 }
 
 void MotionHandler(int x, int y){
+
+	if (isEditing){
+		editor.setMousePosition(x,y);
+		glutPostRedisplay();
+		return;
+	}
 
 	Camera* c = scene.getCamera();
 
@@ -109,6 +147,9 @@ int main(int argc, char** argv){
 	scene.setBounds(roomW,roomH,roomL);
 	scene.setMode(SCENE_MODE_NAVIGATION);
 	scene.init();
+
+	editor.setMainScene(&scene);
+	editor.init();
 
 	//Armario
 	Solid armario(

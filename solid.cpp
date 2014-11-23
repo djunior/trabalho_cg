@@ -39,6 +39,7 @@ bool Solid::hit(float testX, float testY, float testZ){
 }
 
 void Solid::setPosition(float _x, float _y, float _z){
+	std::cout << "Solid::setPosition() x = " << _x << ", y = " << _y << ", z = " << _z << std::endl;
 	x = _x;
 	y = _y;
 	z = _z;

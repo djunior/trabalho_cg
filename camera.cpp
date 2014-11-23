@@ -22,6 +22,7 @@ void Camera::setMode(SceneMode m){
 			eye[2] = 1.0;
 			
 			anglePercentage = 0.5;
+			angleOffset = 0;
 			setFocusPosition();
 			
 			normal[0] = 0.0;
@@ -176,7 +177,18 @@ void Camera::setFocusPosition(int x,int y){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return;
 
-	anglePercentage = 4*((float) x - screenBounds[0])/screenBounds[2] - 1.5;
+	float p = ((float) x - screenBounds[0])/screenBounds[2];
+	
+	if (p <= 0.1){
+		anglePercentage = 0.1;
+		angleOffset -= 0.01;
+	}
+	else if (p >= 0.9){
+		anglePercentage = 0.9;
+		angleOffset += 0.01;
+	}
+
+	anglePercentage = 2*p -0.5 + angleOffset;
 	setFocusPosition();
 }
 
@@ -190,6 +202,12 @@ void Camera::getFocusPosition(float *x, float *y, float *z){
 	*x = focus[0];
 	*y = focus[1];
 	*z = focus[2];
+}
+
+void Camera::getNormal(float *x, float*y, float *z){
+	*x = normal[0];
+	*y = normal[1];
+	*z = normal[2];
 }
 
 void Camera::setScreenBounds(float x, float y, float width, float height){

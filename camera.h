@@ -28,7 +28,7 @@ public:
 
 private:
 	SceneMode mode;
-	float anglePercentage, visionAngle, eye[3],focus[3],normal[3], screenBounds[4];
+	float anglePercentage, angleOffset, visionAngle, eye[3],focus[3],normal[3], screenBounds[4];
 	Bounds3<float> sceneBounds;
 
 	void setFocusPosition();
