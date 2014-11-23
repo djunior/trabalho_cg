@@ -83,6 +83,15 @@ void Scene::addSolid(Solid * s){
 bool Scene::checkCollision(float x, float y, float z){
 	int index = checkQuadrant(x,y,z);
 
+	if (x <= 0 || x >= width )
+		return true;
+
+	if (y < 0 || y >= height)
+		return true;
+
+	if (z <= 0 || z >= length)
+		return true;
+
 	for (std::vector<Solid*>::iterator it = quadrantList[index].begin(); it != quadrantList[index].end(); it++){
 		if ((*it)->hit(x,y,z))
 			return true;

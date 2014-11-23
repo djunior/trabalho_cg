@@ -14,7 +14,7 @@ int roomW = 284, roomL = 308, roomH = 250;
 Scene scene;
 Editor editor;
 
-bool isEditing = true;
+bool isEditing = false;
 
 void Reshape(int width,int height){
 	glViewport(0,0,width,height);
@@ -151,7 +151,7 @@ int main(int argc, char** argv){
 	editor.setMainScene(&scene);
 	editor.init();
 
-	//Armario
+	Armario
 	Solid armario(
 		0.0,0.0,0.0,
 		(float) 57.5, roomH,60
