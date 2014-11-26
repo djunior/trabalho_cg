@@ -16,7 +16,6 @@ public:
 	void moveBackward(bool (*callback)(float,float,float));
 	void moveLeft(bool (*callback)(float,float,float));
 	void moveRight(bool (*callback)(float,float,float));
-	void setFocusPosition(int,int);
 	void getEyePosition(float*,float*,float*);
 	void getFocusPosition(float*,float*,float*);
 	void getNormal(float *, float *, float *);
@@ -26,10 +25,20 @@ public:
 	void setVisionAngle(float);
 	float getVisionAngle();
 
+	void notifyMousePressed(int, int);
+	void notifyMouseDrag(int, int);
+	void notifyMouseReleased(int, int);
+	void notifyMouseMotion(int,int);
+
 private:
 	SceneMode mode;
-	float anglePercentage, angleOffset, visionAngle, eye[3],focus[3],normal[3], screenBounds[4];
+	float angleOffset, visionAngle;
+	Bounds2<float> screenBounds;
 	Bounds3<float> sceneBounds;
+	Coord2<int> dragBegin;
+	Coord2<float> anglePercentage;
+	Coord3<float> eye, focus, normal;
+	bool isDragging;
 
 	void setFocusPosition();
 };

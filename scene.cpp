@@ -4,8 +4,11 @@ Scene::Scene(){
 	screenX = 0;
 	screenY = 0;
 	width = 1;
+	viewportWidth = 1;
+	viewportHeight = 1;
 	height = 1;
 	length = 1;
+	scale = 1;
 	mode = SCENE_MODE_NAVIGATION;
 }
 
@@ -110,39 +113,39 @@ void Scene::applyPerspective(){
 	glLoadIdentity();
 
 	GLdouble near = 0.01;
-	GLdouble far = length + near;
+
+	//distancia maxima = diagonal horizontal da cena
+	GLdouble far = near + sqrt( pow(width,2) + pow(length,2) );
 
 	gluPerspective((GLdouble) camera.getVisionAngle(),(GLdouble) width/height,near,far);
 }
 
 void Scene::init(){
 	camera.setMode(mode);
-	camera.setScreenBounds(0, 0, width*2, height*2);
+	camera.setScreenBounds(screenX, screenY, width*2, height*2);
 	camera.setPosition(-width/2,180/height,length/2);
 	camera.setSceneBounds(width,height,length);
 }
 
-void Scene::draw(){
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (mode == SCENE_MODE_NAVIGATION)
-		applyPerspective();
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-
-	camera.setupCamera();
-
-	glTranslatef(-width/2,-height/2,-length/2);
-
-	glColor3f(0.2,0.2,0.2);
+void Scene::drawBase(){
 	glColorMaterial(GL_FRONT,GL_AMBIENT);
+
+	GLuint tId = getTextureId();
+	glBindTexture(GL_TEXTURE_2D,tId);
+
 	glBegin(GL_QUADS);
+		//Chao
+		glColor3f(0.2,0.2,0.2);
 		glVertex3f(0.0,0.0,0.0);
+		glTexCoord2f(0.0,0.0);
+
 		glVertex3f(width,0.0,0.0);
+		glTexCoord2f(1.0,0.0);
+
 		glVertex3f(width,0.0,length);
+		glTexCoord2f(1.0,1.0);
 		glVertex3f(0.0,0.0,length);
+		glTexCoord2f(0.0,1.0);
 
 		glColor3f(1.0,1.0,1.0);
 
@@ -154,8 +157,78 @@ void Scene::draw(){
 		glVertex3f(0.0,0.0,0.0);
 		glVertex3f(0.0,0.0,length);
 		glVertex3f(0.0,height,length);
-		glVertex3f(0.0,height,0.0);
+		glVertex3f(0.0,height,0.0);			
+
+		if (mode == SCENE_MODE_NAVIGATION){
+			glVertex3f(width,0.0,0.0);
+			glVertex3f(width,0.0,length);
+			glVertex3f(width,height,length);
+			glVertex3f(width,height,0.0);
+
+			glVertex3f(0.0,0.0,length);
+			glVertex3f(0.0,height,length);
+			glVertex3f(width,height,length);
+			glVertex3f(width,0.0,length);
+		}
+
 	glEnd();
+}
+
+void Scene::draw(){
+
+	if (mode == SCENE_MODE_NAVIGATION)
+		applyPerspective();
+	else{
+		glPushMatrix();
+
+		float aspect = width / height;
+
+		// if (aspect > 1){
+
+		// }
+		std::cout << "Scene::draw() aspect = " << aspect << std::endl;
+		if (aspect > 1){
+			float w = scale * viewportWidth/aspect;
+			float h = scale * viewportHeight;
+			glViewport(screenX + (viewportWidth - w)/2, screenY, scale * viewportWidth/aspect, scale * viewportHeight );
+		}else{
+			glViewport(screenX, screenY, scale * viewportWidth * aspect, scale * viewportHeight );
+		}
+
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(-width,width,-height,height,-height,height);
+
+	}
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glColor3f(1.0,0.0,0.0);
+	glBegin(GL_LINES);
+		glVertex3f(-width,-height,0.0);
+		glVertex3f(width,-height,0.0);
+
+		glVertex3f(width,-height,0.0);
+		glVertex3f(width,height,0.0);
+
+		glVertex3f(width,height,0.0);
+		glVertex3f(-width,height,0.0);
+
+		glVertex3f(-width,height,0.0);
+		glVertex3f(-width,-height,0.0);
+	glEnd();
+
+
+	camera.setupCamera();
+
+	// if (mode != SCENE_MODE_NAVIGATION)
+	// 	glScalef(scale,scale,scale);
+
+	glTranslatef(-width/2,-height/2,-length/2);
+
+	drawBase();
 
 	for (std::vector<Solid*>::iterator it = solidList.begin();it != solidList.end(); it++){
 		(*it)->draw();
@@ -165,10 +238,35 @@ void Scene::draw(){
 
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
-	
-	glutSwapBuffers();
 
+	glPopMatrix();
+	
 }
+
+void Scene::setScale(float s){
+	scale = s;
+}
+
+void Scene::setViewport(int w, int h){
+	viewportWidth = w;
+	viewportHeight = h;
+}
+
+void Scene::setScreenPosition(int x, int y){
+	screenX = (float) x;
+	screenY = (float) y;
+
+	camera.setScreenBounds(x,y, scale * viewportWidth, scale*viewportHeight );
+}
+
+void Scene::setScreenPosition(float x, float y){
+	//Testando valores invalidos
+	if (x > 1 || y > 1)
+		return;
+
+	setScreenPosition((int) (getScreenWidth()*x), (int) (getScreenHeight()*y));
+}
+
 
 Camera* Scene::getCamera(){
 	return &camera;

@@ -17,69 +17,81 @@ void Camera::setMode(SceneMode m){
 	mode = m;
 	switch(mode) {
 		case SCENE_MODE_NAVIGATION:
-			eye[0] = 1.0;
-			eye[1] = 1.0;
-			eye[2] = 1.0;
+			eye.x = 1.0;
+			eye.y = 1.0;
+			eye.z = 1.0;
 			
-			anglePercentage = 0.5;
+			dragBegin.x = 0;
+			dragBegin.y = 0;
+
+			anglePercentage.x = 0.5;
+			anglePercentage.y = 0;
+
 			angleOffset = 0;
 			setFocusPosition();
 			
-			normal[0] = 0.0;
-			normal[1] = 1.0;
-			normal[2] = 0.0;
+			normal.x = 0.0;
+			normal.y = 1.0;
+			normal.z = 0.0;
 			break;
 		case SCENE_MODE_ISOMERIC:
-			eye[0] = 1.0;
-			eye[1] = 1.0;
-			eye[2] = 1.0;
+			eye.x = 1.0;
+			eye.y = 1.0;
+			eye.z = 1.0;
 
-			focus[0] = 0.0;
-			focus[1] = 0.0;
-			focus[2] = 0.0;
+			dragBegin.x = 0;
+			dragBegin.y = 0;
+			
+			// anglePercentage.x = 0.0;
+			// angleOffset = 0;
+			// setFocusPosition();
 
-			normal[0] = 0.0;
-			normal[1] = 1.0;
-			normal[2] = 0.0;
+			focus.x = 0.0;
+			focus.y = 0.0;
+			focus.z = 0.0;
+
+			normal.x = 0.0;
+			normal.y = 1.0;
+			normal.z = 0.0;
 			break;
 		case SCENE_MODE_TOP:
-			eye[0] = 0.5;
-			eye[1] = 1.0;
-			eye[2] = 0.5;
+			eye.x = 0.5;
+			eye.y = 1.0;
+			eye.z = 0.5;
 
-			focus[0] = 0.5;
-			focus[1] = 0.0;
-			focus[2] = 0.5;
+			focus.x = 0.5;
+			focus.y = 0.0;
+			focus.z = 0.5;
 
-			normal[0] = 0.0;
-			normal[1] = 0.0;
-			normal[2] = -1.0;
+			normal.x = 0.0;
+			normal.y = 0.0;
+			normal.z = -1.0;
 			break;
 		case SCENE_MODE_RIGHT:
-			eye[0] = 1.0;
-			eye[1] = 0.5;
-			eye[2] = 0.5;
+			eye.x = 1.0;
+			eye.y = 0.5;
+			eye.z = 0.5;
 
-			focus[0] = 0.0;
-			focus[1] = 0.5;
-			focus[2] = 0.5;
+			focus.x = 0.0;
+			focus.y = 0.5;
+			focus.z = 0.5;
 
-			normal[0] = 0.0;
-			normal[1] = 1.0;
-			normal[2] = 0.0;
+			normal.x = 0.0;
+			normal.y = 1.0;
+			normal.z = 0.0;
 			break;
 		case SCENE_MODE_LEFT:
-			eye[0] = 0.0;
-			eye[1] = 0.5;
-			eye[2] = 0.5;
+			eye.x = 0.0;
+			eye.y = 0.5;
+			eye.z = 0.5;
 
-			focus[0] = 1.0;
-			focus[1] = 0.5;
-			focus[2] = 0.5;
+			focus.x = 1.0;
+			focus.y = 0.5;
+			focus.z = 0.5;
 
-			normal[0] = 0.0;
-			normal[1] = 1.0;
-			normal[2] = 0.0;
+			normal.x = 0.0;
+			normal.y = 1.0;
+			normal.z = 0.0;
 			break;
 		default:
 			std::cout << "Camera::setupCamera() mode invalido" << std::endl;
@@ -96,21 +108,21 @@ void Camera::setSceneBounds(float w, float h, float l){
 
 void Camera::setupCamera(){
 	gluLookAt(
-		eye[0],eye[1],eye[2],  // eye
-		focus[0],focus[1],focus[2],  // focus
-		normal[0],normal[1],normal[2]); // normal
+		eye.x,eye.y,eye.z,  // eye
+		focus.x,focus.y,focus.z,  // focus
+		normal.x,normal.y,normal.z); // normal
 }
 
 void Camera::moveForward( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
-	float angle = anglePercentage*M_PI/2;
-	float eyeX = eye[0] - 2*cos(angle);
-	float eyeZ = eye[2] - 2*sin(angle);
+	float angle = anglePercentage.x*M_PI/2;
+	float eyeX = eye.x - 2*cos(angle);
+	float eyeZ = eye.z - 2*sin(angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
-		eye[0] = eyeX;
-		eye[2] = eyeZ;
+		eye.x = eyeX;
+		eye.z = eyeZ;
 
 		setFocusPosition();
 	} 
@@ -120,13 +132,13 @@ void Camera::moveForward( bool (*callback)(float,float,float) ){
 void Camera::moveBackward( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
-	float angle = anglePercentage*M_PI/2;
-	float eyeX = eye[0] + 2*cos(angle);
-	float eyeZ = eye[2] + 2*sin(angle);
+	float angle = anglePercentage.x*M_PI/2;
+	float eyeX = eye.x + 2*cos(angle);
+	float eyeZ = eye.z + 2*sin(angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
-		eye[0] = eyeX;
-		eye[2] = eyeZ;
+		eye.x = eyeX;
+		eye.z = eyeZ;
 
 		setFocusPosition();
 	} 
@@ -135,13 +147,13 @@ void Camera::moveBackward( bool (*callback)(float,float,float) ){
 void Camera::moveLeft( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
-	float angle = anglePercentage*M_PI/2;
-	float eyeX = eye[0] - 2*cos(M_PI/2 - angle);
-	float eyeZ= eye[2] + 2*sin(M_PI/2 - angle);
+	float angle = anglePercentage.x*M_PI/2;
+	float eyeX = eye.x - 2*cos(M_PI/2 - angle);
+	float eyeZ= eye.z + 2*sin(M_PI/2 - angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
-		eye[0] = eyeX;
-		eye[2] = eyeZ;
+		eye.x = eyeX;
+		eye.z = eyeZ;
 
 		setFocusPosition();
 	}
@@ -150,71 +162,111 @@ void Camera::moveLeft( bool (*callback)(float,float,float) ){
 void Camera::moveRight( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
-	float angle = anglePercentage*M_PI/2;
-	float eyeX = eye[0] + 2*cos(M_PI/2 - angle);
-	float eyeZ = eye[2] - 2*sin(M_PI/2 - angle);
+	float angle = anglePercentage.x*M_PI/2;
+	float eyeX = eye.x + 2*cos(M_PI/2 - angle);
+	float eyeZ = eye.z - 2*sin(M_PI/2 - angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
-		eye[0] = eyeX;
-		eye[2] = eyeZ;
+		eye.x = eyeX;
+		eye.z = eyeZ;
 
 		setFocusPosition();
 	}
 }
 
 void Camera::setFocusPosition(){
-	if (mode != SCENE_MODE_NAVIGATION)
+	if (mode != SCENE_MODE_NAVIGATION && mode != SCENE_MODE_ISOMERIC)
 		return;
 
-	float angle = anglePercentage*M_PI/2;
+	float angleX = anglePercentage.x*M_PI/2;
+	float angleY = anglePercentage.y*M_PI/2;
 
-	focus[0] = eye[0] - cos(angle);
-	focus[1] = eye[1];
-	focus[2] = eye[2] - sin(angle);
+	focus.x = eye.x - cos(angleX);
+	if (mode == SCENE_MODE_NAVIGATION)
+		focus.y = eye.y;
+	else
+		focus.y = eye.y + sin(angleY);
+	focus.z = eye.z - sin(angleX);
 }
 
-void Camera::setFocusPosition(int x,int y){
+void Camera::notifyMouseMotion(int x,int y){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return;
 
-	float p = ((float) x - screenBounds[0])/screenBounds[2];
+	float px = ((float) x - 0)/getScreenWidth();
 	
-	if (p <= 0.1){
-		anglePercentage = 0.1;
+	if (px <= 0.1){
+		anglePercentage.x = 0.1;
 		angleOffset -= 0.01;
 	}
-	else if (p >= 0.9){
-		anglePercentage = 0.9;
+	else if (px >= 0.9){
+		anglePercentage.x = 0.9;
 		angleOffset += 0.01;
 	}
 
-	anglePercentage = 2*p -0.5 + angleOffset;
+	anglePercentage.x = 2*px -0.5 + angleOffset;
 	setFocusPosition();
 }
 
+void Camera::notifyMousePressed(int x, int y){
+	std::cout << "Camera::notifyMousePressed(int x, int y)" << std::endl;
+	if (mode != SCENE_MODE_ISOMERIC)
+		return;
+
+	isDragging = true;
+
+	dragBegin.x = x;
+	dragBegin.y = y;
+}
+
+void Camera::notifyMouseDrag(int x,int y){
+
+	if (mode != SCENE_MODE_ISOMERIC || isDragging == false)
+		return;
+
+	float px = ((float)x - dragBegin.x)/(screenBounds.width);
+	float py = -((float)y - dragBegin.y)/(screenBounds.height);
+
+	dragBegin.x = x;
+	dragBegin.y = y;
+
+	anglePercentage.x += px;
+	anglePercentage.y += py;
+
+	setFocusPosition();
+}
+
+void Camera::notifyMouseReleased(int x,int y){
+	isDragging = false;
+
+	dragBegin.x = 0;
+	dragBegin.y = 0;
+}
+
+
 void Camera::getEyePosition(float *x, float *y, float *z){
-	*x = eye[0];
-	*y = eye[1];
-	*z = eye[2];
+	*x = eye.x;
+	*y = eye.y;
+	*z = eye.z;
 }
 
 void Camera::getFocusPosition(float *x, float *y, float *z){
-	*x = focus[0];
-	*y = focus[1];
-	*z = focus[2];
+	*x = focus.x;
+	*y = focus.y;
+	*z = focus.z;
 }
 
 void Camera::getNormal(float *x, float*y, float *z){
-	*x = normal[0];
-	*y = normal[1];
-	*z = normal[2];
+	*x = normal.x;
+	*y = normal.y;
+	*z = normal.z;
 }
 
 void Camera::setScreenBounds(float x, float y, float width, float height){
-	screenBounds[0] = x;
-	screenBounds[1] = y;
-	screenBounds[2] = width;
-	screenBounds[3] = height;
+	screenBounds.position.x = x;
+	screenBounds.position.y = y;
+	screenBounds.width = width;
+	screenBounds.height = height;
 }
 
 void Camera::setVisionAngle(float ang){
@@ -229,9 +281,9 @@ void Camera::setPosition(float x, float y, float z){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return;
 
-	eye[0] = x;
-	eye[1] = y;
-	eye[2] = z;
+	eye.x = x;
+	eye.y = y;
+	eye.z = z;
 
 	setFocusPosition();
 }

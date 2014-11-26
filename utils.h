@@ -7,6 +7,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 typedef enum SceneMode{
 	SCENE_MODE_ISOMERIC,
@@ -43,5 +45,10 @@ struct Bounds3{
 	T height;
 	T length;
 };
+
+float getScreenWidth();
+float getScreenHeight();
+GLuint LoadTexture( const char * );
+GLuint getTextureId();
 
 #endif
