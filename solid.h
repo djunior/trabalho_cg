@@ -5,6 +5,8 @@
 #include <GL/glut.h>
 #include <iostream>
 
+#include "utils.h"
+
 class Solid{
 private:
 
@@ -15,13 +17,15 @@ public:
 	Solid(float,float,float);
 	Solid(float,float,float,float,float,float);
 
-	~Solid();
+	virtual ~Solid();
 
 	void setPosition(float,float,float);
 	//void getPosition(&float,&float,&float);
 
 	void setColor(float,float,float);
-	void draw();
+	// void draw();
+	virtual void draw();
+	virtual SolidType getType();
 
 	bool hit(float, float, float);
 };

@@ -9,6 +9,7 @@ Scene::Scene(){
 	height = 1;
 	length = 1;
 	scale = 1;
+	axis = false;
 	mode = SCENE_MODE_NAVIGATION;
 }
 
@@ -41,7 +42,7 @@ int Scene::checkQuadrant(float x, float y, float z){
 	else
 		index += 6;
 
-	std::cout << "Scene::checkQuadrant() x,y,z = (" << x << "," << y << "," << z << ") index = " << index << std::endl;
+	// std::cout << "Scene::checkQuadrant() x,y,z = (" << x << "," << y << "," << z << ") index = " << index << std::endl;
 
 	return index;
 }
@@ -130,34 +131,37 @@ void Scene::init(){
 void Scene::drawBase(){
 	glColorMaterial(GL_FRONT,GL_AMBIENT);
 
-	GLuint tId = getTextureId();
+	GLuint tId = getTextureHandler()->getTextureId("carpet.bmp");
 	glBindTexture(GL_TEXTURE_2D,tId);
 
+	glColor3f(1.0,1.0,1.0);
 	glBegin(GL_QUADS);
 		//Chao
-		glColor3f(0.2,0.2,0.2);
-		glVertex3f(0.0,0.0,0.0);
+		glColor3f(1.0,1.0,1.0);
+
 		glTexCoord2f(0.0,0.0);
+		glVertex3f(0.0,0.0,0.0);
 
-		glVertex3f(width,0.0,0.0);
 		glTexCoord2f(1.0,0.0);
+		glVertex3f(width,0.0,0.0);
 
-		glVertex3f(width,0.0,length);
 		glTexCoord2f(1.0,1.0);
-		glVertex3f(0.0,0.0,length);
+		glVertex3f(width,0.0,length);
+		
 		glTexCoord2f(0.0,1.0);
+		glVertex3f(0.0,0.0,length);
 
 		glColor3f(1.0,1.0,1.0);
 
-		glVertex3f(0.0,0.0,0.0);
-		glVertex3f(width,0.0,0.0);
-		glVertex3f(width,height,0.0);
-		glVertex3f(0.0,height,0.0);
+		// glVertex3f(0.0,0.0,0.0);
+		// glVertex3f(width,0.0,0.0);
+		// glVertex3f(width,height,0.0);
+		// glVertex3f(0.0,height,0.0);
 
-		glVertex3f(0.0,0.0,0.0);
-		glVertex3f(0.0,0.0,length);
-		glVertex3f(0.0,height,length);
-		glVertex3f(0.0,height,0.0);			
+		// glVertex3f(0.0,0.0,0.0);
+		// glVertex3f(0.0,0.0,length);
+		// glVertex3f(0.0,height,length);
+		// glVertex3f(0.0,height,0.0);			
 
 		if (mode == SCENE_MODE_NAVIGATION){
 			glVertex3f(width,0.0,0.0);
@@ -175,58 +179,68 @@ void Scene::drawBase(){
 }
 
 void Scene::draw(){
-
 	if (mode == SCENE_MODE_NAVIGATION)
 		applyPerspective();
 	else{
 		glPushMatrix();
 
-		float aspect = width / height;
-
-		// if (aspect > 1){
-
-		// }
-		std::cout << "Scene::draw() aspect = " << aspect << std::endl;
-		if (aspect > 1){
-			float w = scale * viewportWidth/aspect;
-			float h = scale * viewportHeight;
-			glViewport(screenX + (viewportWidth - w)/2, screenY, scale * viewportWidth/aspect, scale * viewportHeight );
-		}else{
-			glViewport(screenX, screenY, scale * viewportWidth * aspect, scale * viewportHeight );
-		}
-
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(-width,width,-height,height,-height,height);
-
+		glOrtho(-width,width,-height,height,-length,length);
 	}
 
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+	// glColor3f(1.0,0.0,0.0);
+	// glBegin(GL_LINES);
+	// 	glVertex3f(-width,-height,0.0);
+	// 	glVertex3f(width,-height,0.0);
 
-	glColor3f(1.0,0.0,0.0);
-	glBegin(GL_LINES);
-		glVertex3f(-width,-height,0.0);
-		glVertex3f(width,-height,0.0);
+	// 	glVertex3f(width,-height,0.0);
+	// 	glVertex3f(width,height,0.0);
 
-		glVertex3f(width,-height,0.0);
-		glVertex3f(width,height,0.0);
+	// 	glVertex3f(width,height,0.0);
+	// 	glVertex3f(-width,height,0.0);
 
-		glVertex3f(width,height,0.0);
-		glVertex3f(-width,height,0.0);
-
-		glVertex3f(-width,height,0.0);
-		glVertex3f(-width,-height,0.0);
-	glEnd();
-
+	// 	glVertex3f(-width,height,0.0);
+	// 	glVertex3f(-width,-height,0.0);
+	// glEnd();
 
 	camera.setupCamera();
 
 	// if (mode != SCENE_MODE_NAVIGATION)
 	// 	glScalef(scale,scale,scale);
 
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
 	glTranslatef(-width/2,-height/2,-length/2);
+	if (axis) {
+		glLineWidth(2.5);
+		glColor3f(1.0, 0.0, 0.0);
+		glBegin(GL_LINES);
+			glVertex3f(0.0, 0.0, 0.0);
+			glVertex3f(width+40, 0, 0);
+
+			glVertex3f(0.0, 0.0, 0.0);
+			glVertex3f(0, height + 20, 0);
+
+			glVertex3f(0.0, 0.0, 0.0);
+			glVertex3f(0, 0, length + 40);
+		glEnd();
+
+		glBegin(GL_TRIANGLES);
+			glVertex3f(width+40,0.0,-5.0);
+			glVertex3f(width+40,0.0,5.0);
+			glVertex3f(width+47,0.0,0.0);
+
+			glVertex3f(-3.0,height+20,4.0);
+			glVertex3f(3.0,height+20,-4.0);
+			glVertex3f(0.0,height+27,0.0);
+
+			glVertex3f(-5,0.0,length+40);
+			glVertex3f(5,0.0,length+40);
+			glVertex3f(0.0,0.0,length+47);
+		glEnd();
+	}
 
 	drawBase();
 
@@ -240,7 +254,7 @@ void Scene::draw(){
 	glPopMatrix();
 
 	glPopMatrix();
-	
+
 }
 
 void Scene::setScale(float s){
@@ -250,6 +264,8 @@ void Scene::setScale(float s){
 void Scene::setViewport(int w, int h){
 	viewportWidth = w;
 	viewportHeight = h;
+
+	camera.setScreenBounds(screenX, screenY, scale * viewportWidth, scale*viewportHeight );
 }
 
 void Scene::setScreenPosition(int x, int y){
@@ -264,9 +280,69 @@ void Scene::setScreenPosition(float x, float y){
 	if (x > 1 || y > 1)
 		return;
 
-	setScreenPosition((int) (getScreenWidth()*x), (int) (getScreenHeight()*y));
+	setScreenPosition((int) (viewportWidth*x), (int) (viewportHeight*y));
 }
 
+void Scene::showAxis(bool b){
+	axis = b;
+}
+
+void Scene::convertScreenToWorldCoord(int x,int y, float*wx, float *wy, float* wz){
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(-width,width,-height,height,-length,length);
+
+	camera.setupCamera();
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glTranslatef(-width/2,-height/2,-length/2);
+
+	int viewport[4];
+	GLdouble modelview[16],projection[16];
+	Coord3<GLdouble> wc1,wc2;
+
+	glGetIntegerv(GL_VIEWPORT, viewport); 
+	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
+	glGetDoublev (GL_PROJECTION_MATRIX, projection);
+
+
+	gluUnProject(x,viewport[3] - y,  0.0, modelview,  projection,  viewport,  &wc1.x,  &wc1.y,  &wc1.z);
+	gluUnProject(x,viewport[3] - y,  1.0, modelview,  projection,  viewport,  &wc2.x,  &wc2.y,  &wc2.z);
+
+	double f = wc1.y / ( wc2.y - wc1.y );
+	double x2d = wc1.x - f * (wc2.x - wc1.x );
+	double z2d = wc1.z - f * (wc2.z - wc1.z );
+
+	*wx = (float) x2d;
+	*wy = (float) 0;
+	*wz = (float) z2d;
+
+	//Retornando as matrizes aos valores iniciais
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+
+}
+
+bool Scene::isSolidInsideScene(Solid*s){
+	return isInsideScene(s->x,s->y,s->z,s->width,s->height,s->length);
+}
+
+bool Scene::isInsideScene(float x,float y,float z,float w,float h,float l){
+	if (x < 0 || x+w > width)
+		return false;
+
+	if (y < 0 || y+h > height)
+		return false;
+
+	if (z < 0 || z+l > length)
+		return false;
+
+	return true;
+}
 
 Camera* Scene::getCamera(){
 	return &camera;

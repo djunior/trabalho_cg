@@ -6,7 +6,7 @@
 #include <iostream>
 #define _USE_MATH_DEFINES
 #include <math.h>
-
+#include "textureHandler.h"
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
@@ -17,6 +17,13 @@ typedef enum SceneMode{
 	SCENE_MODE_RIGHT,
 	SCENE_MODE_NAVIGATION
 } SceneMode;
+
+enum SolidType{
+	SOLID_TYPE_GENERIC,
+	SOLID_TYPE_TABLE,
+	SOLID_TYPE_BED,
+	SOLID_TYPE_CHAIR
+};
 
 template <typename T>
 struct Coord2{
@@ -46,9 +53,6 @@ struct Bounds3{
 	T length;
 };
 
-float getScreenWidth();
-float getScreenHeight();
-GLuint LoadTexture( const char * );
-GLuint getTextureId();
+TextureHandler* getTextureHandler();
 
 #endif

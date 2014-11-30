@@ -23,6 +23,10 @@ Solid::Solid(float x,float y,float z,float w, float h, float l){
 	setPosition(x,y,z);
 }
 
+SolidType Solid::getType(){
+	return SOLID_TYPE_GENERIC;
+}
+
 bool Solid::hit(float testX, float testY, float testZ){
 	bool hitX = false, hitY = false, hitZ = false;
 
@@ -49,11 +53,12 @@ void Solid::draw(){
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
+	// glRotatef(45,0,1,0);
 	glTranslatef(x,y,z);
 
 	glColor3f(0.4,0.4,0.8);
 	glBegin(GL_QUADS);
-		 	//baixo
+		//baixo
 	 	glNormal3f(0.0,-1.0,0.0);
 	 	glVertex3f(0,0,0);
 	 	glNormal3f(0.0,-1.0,0.0);

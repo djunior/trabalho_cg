@@ -1,7 +1,8 @@
 #include "editor.h"
 
 Editor::Editor(){
-
+	activeSolid = 0;
+	editing = false;
 }
 
 Editor::~Editor(){
@@ -9,6 +10,7 @@ Editor::~Editor(){
 		delete *it;
 	}
 	solidList.clear();
+	activeSolid = 0;
 }
 
 void Editor::draw(){
@@ -79,10 +81,29 @@ void Editor::setSceneBounds(float w, float h, float l){
 }
 
 void Editor::createSolid(float w, float h, float l){
-	scene.clear();
-	activeSolid = new Solid(0,0,0,w,h,l);
+	createSolid(SOLID_TYPE_GENERIC,w,h,l);
+}
+
+void Editor::createSolid(SolidType t, float w, float h, float l){
+	// scene.clear();
+	if (t == SOLID_TYPE_GENERIC)
+		activeSolid = new Solid(0,0,0,w,h,l);
+	else if (t == SOLID_TYPE_TABLE)
+		activeSolid = new Table(0,0,0,w,h,l);
+	else if (t == SOLID_TYPE_BED)
+		activeSolid = new Bed(0,0,0,w,h,l);
+	else if (t == SOLID_TYPE_CHAIR)
+		activeSolid = new Chair(0,0,0,w,h,l);
+
 	solidList.push_back(activeSolid);
 	scene.addSolid(activeSolid);
+}
+
+void Editor::createSolid(SolidType t, float x, float y, float z, float w, float h, float l){
+	createSolid(t,w,h,l);
+	activeSolid->setPosition(x,y,z);
+	mainScene->addSolid(activeSolid);
+	//finalize();
 }
 
 void Editor::setSceneMode(SceneMode m){
@@ -90,5 +111,86 @@ void Editor::setSceneMode(SceneMode m){
 }
 
 void Editor::finalize(){
-	mainScene->addSolid(activeSolid);
+	stopEditing();
+	activeSolid = 0;
 }
+
+void Editor::clear(){
+	mainScene->clear();
+	for (std::vector<Solid*>::iterator it = solidList.begin(); it != solidList.end(); it++){
+		delete *it;
+	}
+	solidList.clear();
+}
+
+void Editor::save(std::string filename){
+	std::ofstream output(filename);
+	float sceneWidth, sceneHeight, sceneLength;
+
+	mainScene->getBounds(&sceneWidth,&sceneHeight,&sceneLength);
+
+	output << sceneWidth << " " << sceneHeight << " " << sceneLength << std::endl;
+	for (std::vector<Solid*>::iterator it = solidList.begin(); it != solidList.end(); it++){
+		Solid* s = *it;
+		int t = s->getType();
+		int x = s->x, y = s->y, z = s->z;
+		int w = s->width, h = s->height, l = s->length;
+		output << t << " " << x << " " << y << " " << z << " " << w << " " << h << " " << l << std::endl;
+	}
+
+	output.close();
+}
+
+void Editor::load(std::string filename){
+	std::cout << "Editor::load(std::string filename = " << filename << ")" << std::endl;
+	std::ifstream input( filename );
+	
+	//primeira linha
+	int sceneWidth, sceneHeight, sceneLength;
+	std::string firstLine; 
+	std::getline( input, firstLine );
+
+	std::istringstream firstStringStream(firstLine);
+
+	firstStringStream >> sceneWidth >> sceneHeight >> sceneLength;
+	mainScene->setBounds(sceneWidth,sceneHeight,sceneLength);
+
+	for( std::string line; std::getline( input, line );)
+	{
+		std::istringstream iss(line);
+		int t,x,y,z,w,h,l;
+		iss >> t >> x >> y >> z >> w >> h >> l;
+		createSolid((SolidType) t,x,y,z,w,h,l);
+		finalize();
+	}
+
+	input.close();
+}
+
+Solid* Editor::getActiveSolid(){
+	return activeSolid;
+}
+
+bool Editor::isEditing(){
+	return (activeSolid != 0 && editing);
+}
+
+void Editor::startEditing(){
+	editing = true;
+}
+
+void Editor::stopEditing(){
+	editing = false;
+}
+
+void Editor::setSolidPosition(float x, float y, float z){
+	std::cout << "Editor::setSolidPosition(float x, float y, float z)" << std::endl;
+	if (! isEditing())
+		return;
+	std::cout << "Editor::setSolidPosition(float x, float y, float z) checking bounds" << std::endl;
+    if (mainScene->isInsideScene(x,y,z,activeSolid->width,activeSolid->height,activeSolid->length)){
+    	std::cout << "Editor::setSolidPosition(float x, float y, float z) positioning solid" << std::endl;
+        activeSolid->setPosition(x,y,z);
+    }
+}
+

@@ -7,6 +7,7 @@
 #include <vector>
 #include "solid.h"
 #include "camera.h"
+#include "textureHandler.h"
 
 class Scene{
 private:
@@ -20,6 +21,8 @@ private:
 	void applyPerspective();
 	int checkQuadrant(float,float,float);
 	void drawBase();
+
+	bool axis;
 
 public:
 	Scene();
@@ -40,6 +43,10 @@ public:
 	void setScale(float);
 	void setViewport(int,int);
 	void setScreenPosition(float,float);
+	void showAxis(bool b);
+	void convertScreenToWorldCoord(int,int,float*,float*,float*);
+	bool isSolidInsideScene(Solid*);
+	bool isInsideScene(float,float,float,float,float,float);
 };
 
 #endif

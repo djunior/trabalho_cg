@@ -1,7 +1,7 @@
 #include "camera.h"
 
 Camera::Camera(){
-	visionAngle = 120;
+	visionAngle = 90;
 	setMode(SCENE_MODE_NAVIGATION);
 }
 
@@ -183,7 +183,7 @@ void Camera::setFocusPosition(){
 
 	focus.x = eye.x - cos(angleX);
 	if (mode == SCENE_MODE_NAVIGATION)
-		focus.y = eye.y;
+		focus.y = eye.y - sin(angleY);
 	else
 		focus.y = eye.y + sin(angleY);
 	focus.z = eye.z - sin(angleX);
@@ -193,8 +193,9 @@ void Camera::notifyMouseMotion(int x,int y){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return;
 
-	float px = ((float) x - 0)/getScreenWidth();
-	
+	float px = ((float) x - 0)/screenBounds.width;
+	float py = ((float) y - 0)/screenBounds.height;
+
 	if (px <= 0.1){
 		anglePercentage.x = 0.1;
 		angleOffset -= 0.01;
@@ -205,11 +206,12 @@ void Camera::notifyMouseMotion(int x,int y){
 	}
 
 	anglePercentage.x = 2*px -0.5 + angleOffset;
+	anglePercentage.y = py - 0.5;
+
 	setFocusPosition();
 }
 
 void Camera::notifyMousePressed(int x, int y){
-	std::cout << "Camera::notifyMousePressed(int x, int y)" << std::endl;
 	if (mode != SCENE_MODE_ISOMERIC)
 		return;
 
