@@ -8,10 +8,12 @@
 #include "utils.h"
 
 class Solid{
-private:
-
+protected:
+	void rotate();
+	void drawBase(std::string,float,float,float,float,float,float);
+	void drawBase(float,float,float);
 public:
-	float x,y,z,width,height,length;
+	float x,y,z,width,height,length,rotation;
 
 	Solid();
 	Solid(float,float,float);
@@ -20,6 +22,7 @@ public:
 	virtual ~Solid();
 
 	void setPosition(float,float,float);
+	void getRotatedBounds(float*,float*,float*);
 	//void getPosition(&float,&float,&float);
 
 	void setColor(float,float,float);

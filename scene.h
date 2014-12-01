@@ -17,10 +17,14 @@ private:
 	float screenX, screenY, width,height,length, scale;
 	int viewportWidth, viewportHeight;
 	Camera camera;
+	Coord3<float> cameraPosition;
 
 	void applyPerspective();
 	int checkQuadrant(float,float,float);
 	void drawBase();
+	void addSolidToQuadrantList(Solid*);
+	void clearQuadrants();
+	void buildQuadrantList();
 
 	bool axis;
 
@@ -47,6 +51,9 @@ public:
 	void convertScreenToWorldCoord(int,int,float*,float*,float*);
 	bool isSolidInsideScene(Solid*);
 	bool isInsideScene(float,float,float,float,float,float);
+	void setCameraPosition(float,float,float);
+	void getCameraPosition(float*,float*,float*);
+	void remove(Solid*);
 };
 
 #endif

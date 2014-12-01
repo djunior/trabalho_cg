@@ -59,9 +59,41 @@ void Scene::getBounds(float*w,float*h,float*l){
 	*l = length;
 }
 
+void Scene::clearQuadrants(){
+	for (int i = 0; i < 9; i++)
+		quadrantList[i].clear();
+}
+
+void Scene::addSolidToQuadrantList(Solid* s){
+
+	float w,h,l;
+	s->getRotatedBounds(&w,&h,&l);
+
+	int index = checkQuadrant(s->x, s->y, s->z);
+	int secondIndex = checkQuadrant(s->x + w, s->y, s->z);
+	int thirdIndex = checkQuadrant(s->x, s->y, s->z+l);
+
+	for (int i = index; i <= secondIndex; i++){
+		for (int j = index; j <= thirdIndex; j += 3){
+			// std::cout << "Adicionando solido ao quadrante " << i+j-index << std::endl;
+			quadrantList[i+j-index].push_back(s);
+		}
+	}
+}
+
+void Scene::buildQuadrantList(){
+	for (std::vector<Solid*>::iterator it = solidList.begin(); it != solidList.end(); it++)
+		addSolidToQuadrantList(*it);
+}
+
 void Scene::setMode(SceneMode m){
 	mode = m;
 	camera.setMode(mode);
+	if (mode == SCENE_MODE_NAVIGATION){
+		camera.setPosition(cameraPosition.x,cameraPosition.y,cameraPosition.z);
+		clearQuadrants();
+		buildQuadrantList();
+	}
 }
 
 SceneMode Scene::getMode(){
@@ -70,18 +102,6 @@ SceneMode Scene::getMode(){
 
 void Scene::addSolid(Solid * s){
 	solidList.push_back(s);
-
-	int index = checkQuadrant(s->x, s->y, s->z);
-	int secondIndex = checkQuadrant(s->x + s->width, s->y, s->z);
-	int thirdIndex = checkQuadrant(s->x, s->y, s->z+s->length);
-
-	for (int i = index; i <= secondIndex; i++){
-		for (int j = index; j <= thirdIndex; j += 3){
-			// std::cout << "Adicionando solido ao quadrante " << i+j-index << std::endl;
-			quadrantList[i+j-index].push_back(s);
-		}
-	}
-
 }
 
 bool Scene::checkCollision(float x, float y, float z){
@@ -116,7 +136,7 @@ void Scene::applyPerspective(){
 	GLdouble near = 0.01;
 
 	//distancia maxima = diagonal horizontal da cena
-	GLdouble far = near + sqrt( pow(width,2) + pow(length,2) );
+	GLdouble far = (near + sqrt( pow(width,2) + pow(length,2) ) ) / sin(camera.getVerticalAngle());
 
 	gluPerspective((GLdouble) camera.getVisionAngle(),(GLdouble) width/height,near,far);
 }
@@ -124,8 +144,8 @@ void Scene::applyPerspective(){
 void Scene::init(){
 	camera.setMode(mode);
 	camera.setScreenBounds(screenX, screenY, width*2, height*2);
-	camera.setPosition(-width/2,180/height,length/2);
 	camera.setSceneBounds(width,height,length);
+	camera.setPosition(0.0,180,length);
 }
 
 void Scene::drawBase(){
@@ -287,6 +307,16 @@ void Scene::showAxis(bool b){
 	axis = b;
 }
 
+void Scene::remove(Solid *solid){
+	for (std::vector<Solid*>::iterator it = solidList.begin(); it != solidList.end(); it++){
+		Solid* s = *it;
+		if (s == solid){
+			solidList.erase(it);
+			return;
+		}
+	}
+}
+
 void Scene::convertScreenToWorldCoord(int x,int y, float*wx, float *wy, float* wz){
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -346,4 +376,16 @@ bool Scene::isInsideScene(float x,float y,float z,float w,float h,float l){
 
 Camera* Scene::getCamera(){
 	return &camera;
+}
+
+void Scene::setCameraPosition(float x, float y, float z){
+	cameraPosition.x = x;
+	cameraPosition.y = y;
+	cameraPosition.z = z;
+}
+
+void Scene::getCameraPosition(float *x, float *y, float *z){
+	*x = cameraPosition.x;
+	*y = cameraPosition.y;
+	*z = cameraPosition.z;
 }

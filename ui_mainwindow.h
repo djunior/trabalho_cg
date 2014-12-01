@@ -42,7 +42,6 @@ public:
     QWidget *centralwidget;
     QTabWidget *tabWidget;
     QWidget *tab;
-    QCheckBox *cbTexturas;
     QRadioButton *isomerico;
     QRadioButton *ortogonal;
     QLabel *label_11;
@@ -58,6 +57,9 @@ public:
     QLabel *label_20;
     QDoubleSpinBox *spinBoxCameraZ;
     QPushButton *posicionarCamera;
+    QRadioButton *topo;
+    QLabel *label_22;
+    QFrame *line_4;
     QWidget *tab_2;
     QPushButton *deletar;
     QDoubleSpinBox *spinBoxH;
@@ -79,7 +81,6 @@ public:
     QLabel *label_14;
     QLabel *label_15;
     QComboBox *comboBox;
-    QPushButton *aplicar;
     QLabel *label_7;
     QLabel *label_8;
     QLabel *label_9;
@@ -87,6 +88,9 @@ public:
     QLabel *label_12;
     QFrame *line;
     QPushButton *posicionar;
+    QPushButton *adicionar;
+    QLabel *label_21;
+    QSpinBox *spinBoxRotation;
     MeuPainelOpenGL *painelGL;
     QMenuBar *menubar;
     QMenu *menuOPen;
@@ -109,70 +113,76 @@ public:
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
-        tabWidget->setGeometry(QRect(900, 0, 291, 911));
+        tabWidget->setGeometry(QRect(900, 10, 291, 911));
         tabWidget->setMovable(false);
         tab = new QWidget();
         tab->setObjectName(QStringLiteral("tab"));
-        cbTexturas = new QCheckBox(tab);
-        cbTexturas->setObjectName(QStringLiteral("cbTexturas"));
-        cbTexturas->setGeometry(QRect(20, 440, 141, 41));
-        cbTexturas->setChecked(true);
         isomerico = new QRadioButton(tab);
         isomerico->setObjectName(QStringLiteral("isomerico"));
         isomerico->setGeometry(QRect(20, 60, 241, 17));
         isomerico->setChecked(true);
         ortogonal = new QRadioButton(tab);
         ortogonal->setObjectName(QStringLiteral("ortogonal"));
-        ortogonal->setGeometry(QRect(20, 80, 221, 17));
+        ortogonal->setGeometry(QRect(20, 120, 221, 17));
         ortogonal->setChecked(false);
         label_11 = new QLabel(tab);
         label_11->setObjectName(QStringLiteral("label_11"));
         label_11->setGeometry(QRect(16, 30, 241, 21));
         line_2 = new QFrame(tab);
         line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setGeometry(QRect(10, 40, 261, 16));
+        line_2->setGeometry(QRect(10, 40, 271, 16));
         line_2->setFrameShape(QFrame::HLine);
         line_2->setFrameShadow(QFrame::Sunken);
         label_16 = new QLabel(tab);
         label_16->setObjectName(QStringLiteral("label_16"));
-        label_16->setGeometry(QRect(20, 130, 241, 21));
+        label_16->setGeometry(QRect(20, 200, 241, 21));
         line_3 = new QFrame(tab);
         line_3->setObjectName(QStringLiteral("line_3"));
-        line_3->setGeometry(QRect(10, 140, 261, 16));
+        line_3->setGeometry(QRect(10, 210, 271, 16));
         line_3->setFrameShape(QFrame::HLine);
         line_3->setFrameShadow(QFrame::Sunken);
         label_17 = new QLabel(tab);
         label_17->setObjectName(QStringLiteral("label_17"));
-        label_17->setGeometry(QRect(10, 170, 241, 17));
+        label_17->setGeometry(QRect(10, 240, 241, 17));
         cbAxis = new QCheckBox(tab);
         cbAxis->setObjectName(QStringLiteral("cbAxis"));
         cbAxis->setGeometry(QRect(20, 480, 131, 31));
         label_18 = new QLabel(tab);
         label_18->setObjectName(QStringLiteral("label_18"));
-        label_18->setGeometry(QRect(20, 190, 67, 17));
+        label_18->setGeometry(QRect(20, 260, 67, 17));
         spinBoxCameraX = new QDoubleSpinBox(tab);
         spinBoxCameraX->setObjectName(QStringLiteral("spinBoxCameraX"));
-        spinBoxCameraX->setGeometry(QRect(200, 190, 69, 21));
+        spinBoxCameraX->setGeometry(QRect(200, 260, 69, 21));
         spinBoxCameraX->setMaximum(999.99);
         label_19 = new QLabel(tab);
         label_19->setObjectName(QStringLiteral("label_19"));
-        label_19->setGeometry(QRect(20, 220, 67, 21));
+        label_19->setGeometry(QRect(20, 290, 67, 21));
         spinBoxCameraY = new QDoubleSpinBox(tab);
         spinBoxCameraY->setObjectName(QStringLiteral("spinBoxCameraY"));
-        spinBoxCameraY->setGeometry(QRect(200, 220, 69, 21));
+        spinBoxCameraY->setGeometry(QRect(200, 290, 69, 21));
         spinBoxCameraY->setMaximum(999.99);
         label_20 = new QLabel(tab);
         label_20->setObjectName(QStringLiteral("label_20"));
-        label_20->setGeometry(QRect(20, 250, 67, 21));
+        label_20->setGeometry(QRect(20, 320, 67, 21));
         spinBoxCameraZ = new QDoubleSpinBox(tab);
         spinBoxCameraZ->setObjectName(QStringLiteral("spinBoxCameraZ"));
-        spinBoxCameraZ->setGeometry(QRect(200, 250, 69, 21));
+        spinBoxCameraZ->setGeometry(QRect(200, 320, 69, 21));
         spinBoxCameraZ->setMaximum(999.99);
         posicionarCamera = new QPushButton(tab);
         posicionarCamera->setObjectName(QStringLiteral("posicionarCamera"));
-        posicionarCamera->setGeometry(QRect(10, 290, 261, 27));
+        posicionarCamera->setGeometry(QRect(10, 360, 261, 27));
+        topo = new QRadioButton(tab);
+        topo->setObjectName(QStringLiteral("topo"));
+        topo->setGeometry(QRect(20, 90, 117, 22));
+        label_22 = new QLabel(tab);
+        label_22->setObjectName(QStringLiteral("label_22"));
+        label_22->setGeometry(QRect(20, 440, 67, 21));
+        line_4 = new QFrame(tab);
+        line_4->setObjectName(QStringLiteral("line_4"));
+        line_4->setGeometry(QRect(10, 450, 271, 16));
+        line_4->setFrameShape(QFrame::HLine);
+        line_4->setFrameShadow(QFrame::Sunken);
         tabWidget->addTab(tab, QString());
-        cbTexturas->raise();
         isomerico->raise();
         ortogonal->raise();
         label_11->raise();
@@ -188,11 +198,14 @@ public:
         label_20->raise();
         posicionarCamera->raise();
         spinBoxCameraZ->raise();
+        topo->raise();
+        label_22->raise();
+        line_4->raise();
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
         deletar = new QPushButton(tab_2);
         deletar->setObjectName(QStringLiteral("deletar"));
-        deletar->setGeometry(QRect(20, 580, 251, 31));
+        deletar->setGeometry(QRect(20, 730, 251, 31));
         spinBoxH = new QDoubleSpinBox(tab_2);
         spinBoxH->setObjectName(QStringLiteral("spinBoxH"));
         spinBoxH->setGeometry(QRect(210, 260, 62, 22));
@@ -261,9 +274,6 @@ public:
         comboBox->setGeometry(QRect(130, 40, 141, 31));
         comboBox->setFocusPolicy(Qt::NoFocus);
         comboBox->setContextMenuPolicy(Qt::NoContextMenu);
-        aplicar = new QPushButton(tab_2);
-        aplicar->setObjectName(QStringLiteral("aplicar"));
-        aplicar->setGeometry(QRect(20, 540, 251, 31));
         label_7 = new QLabel(tab_2);
         label_7->setObjectName(QStringLiteral("label_7"));
         label_7->setGeometry(QRect(10, 90, 251, 17));
@@ -286,7 +296,18 @@ public:
         line->setFrameShadow(QFrame::Sunken);
         posicionar = new QPushButton(tab_2);
         posicionar->setObjectName(QStringLiteral("posicionar"));
-        posicionar->setGeometry(QRect(20, 500, 251, 31));
+        posicionar->setGeometry(QRect(20, 690, 251, 31));
+        adicionar = new QPushButton(tab_2);
+        adicionar->setObjectName(QStringLiteral("adicionar"));
+        adicionar->setGeometry(QRect(20, 650, 251, 27));
+        label_21 = new QLabel(tab_2);
+        label_21->setObjectName(QStringLiteral("label_21"));
+        label_21->setGeometry(QRect(10, 480, 211, 21));
+        spinBoxRotation = new QSpinBox(tab_2);
+        spinBoxRotation->setObjectName(QStringLiteral("spinBoxRotation"));
+        spinBoxRotation->setGeometry(QRect(210, 480, 61, 21));
+        spinBoxRotation->setMaximum(360);
+        spinBoxRotation->setSingleStep(90);
         tabWidget->addTab(tab_2, QString());
         deletar->raise();
         spinBoxH->raise();
@@ -307,7 +328,6 @@ public:
         label_14->raise();
         label_15->raise();
         comboBox->raise();
-        aplicar->raise();
         label_7->raise();
         label_8->raise();
         label_9->raise();
@@ -316,6 +336,9 @@ public:
         line->raise();
         posicionar->raise();
         spinBoxW->raise();
+        adicionar->raise();
+        label_21->raise();
+        spinBoxRotation->raise();
         painelGL = new MeuPainelOpenGL(centralwidget);
         painelGL->setObjectName(QStringLiteral("painelGL"));
         painelGL->setGeometry(QRect(10, 20, 881, 811));
@@ -341,7 +364,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -357,9 +380,8 @@ public:
 #ifndef QT_NO_TOOLTIP
         tabWidget->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><br/></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
-        cbTexturas->setText(QApplication::translate("MainWindow", "Aplicar Texturas", 0));
         isomerico->setText(QApplication::translate("MainWindow", "Isom\303\251rico", 0));
-        ortogonal->setText(QApplication::translate("MainWindow", "Ortogonal", 0));
+        ortogonal->setText(QApplication::translate("MainWindow", "Navega\303\247\303\243o", 0));
         label_11->setText(QApplication::translate("MainWindow", "Modo de Visualiza\303\247\303\243o", 0));
         label_16->setText(QApplication::translate("MainWindow", "C\303\242mera", 0));
         label_17->setText(QApplication::translate("MainWindow", "Posi\303\247\303\243o Inicial :", 0));
@@ -367,7 +389,15 @@ public:
         label_18->setText(QApplication::translate("MainWindow", "X", 0));
         label_19->setText(QApplication::translate("MainWindow", "Y", 0));
         label_20->setText(QApplication::translate("MainWindow", "Z", 0));
+#ifndef QT_NO_TOOLTIP
+        posicionarCamera->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_WHATSTHIS
+        posicionarCamera->setWhatsThis(QString());
+#endif // QT_NO_WHATSTHIS
         posicionarCamera->setText(QApplication::translate("MainWindow", "Posicionar Camera", 0));
+        topo->setText(QApplication::translate("MainWindow", "Topo", 0));
+        label_22->setText(QApplication::translate("MainWindow", "Cena", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Visualizacao", 0));
         deletar->setText(QApplication::translate("MainWindow", "Deletar", 0));
         label->setText(QApplication::translate("MainWindow", "Altura", 0));
@@ -385,14 +415,16 @@ public:
          << QApplication::translate("MainWindow", "Mesa", 0)
          << QApplication::translate("MainWindow", "Cama", 0)
          << QApplication::translate("MainWindow", "Cadeira", 0)
+         << QApplication::translate("MainWindow", "Gaveteiro", 0)
         );
-        aplicar->setText(QApplication::translate("MainWindow", "Aplicar", 0));
         label_7->setText(QApplication::translate("MainWindow", "Posi\303\247\303\243o :", 0));
         label_8->setText(QApplication::translate("MainWindow", "Dimens\303\243o :", 0));
         label_9->setText(QApplication::translate("MainWindow", "Cor :", 0));
         label_10->setText(QApplication::translate("MainWindow", "Tipo", 0));
         label_12->setText(QApplication::translate("MainWindow", "Adicionar Elemento", 0));
         posicionar->setText(QApplication::translate("MainWindow", "Posicionar", 0));
+        adicionar->setText(QApplication::translate("MainWindow", "Adicionar", 0));
+        label_21->setText(QApplication::translate("MainWindow", "Rota\303\247\303\243o :", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Elementos", 0));
         menuOPen->setTitle(QApplication::translate("MainWindow", "File", 0));
     } // retranslateUi

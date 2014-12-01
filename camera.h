@@ -24,11 +24,12 @@ public:
 	void setMode(SceneMode);
 	void setVisionAngle(float);
 	float getVisionAngle();
+	float getVerticalAngle();
 
 	void notifyMousePressed(int, int);
 	void notifyMouseDrag(int, int);
 	void notifyMouseReleased(int, int);
-	void notifyMouseMotion(int,int);
+	bool notifyMouseMotion(int,int);
 
 private:
 	SceneMode mode;

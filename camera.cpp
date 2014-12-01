@@ -2,6 +2,7 @@
 
 Camera::Camera(){
 	visionAngle = 90;
+
 	setMode(SCENE_MODE_NAVIGATION);
 }
 
@@ -17,9 +18,9 @@ void Camera::setMode(SceneMode m){
 	mode = m;
 	switch(mode) {
 		case SCENE_MODE_NAVIGATION:
-			eye.x = 1.0;
+			eye.x = 0.0;
 			eye.y = 1.0;
-			eye.z = 1.0;
+			eye.z = 0.0;
 			
 			dragBegin.x = 0;
 			dragBegin.y = 0;
@@ -98,6 +99,10 @@ void Camera::setMode(SceneMode m){
 			break;
 	}
 
+}
+
+float Camera::getVerticalAngle(){
+	return anglePercentage.y*M_PI/2;
 }
 
 void Camera::setSceneBounds(float w, float h, float l){
@@ -189,26 +194,31 @@ void Camera::setFocusPosition(){
 	focus.z = eye.z - sin(angleX);
 }
 
-void Camera::notifyMouseMotion(int x,int y){
+bool Camera::notifyMouseMotion(int x,int y){
+	bool atEdge = true;
 	if (mode != SCENE_MODE_NAVIGATION)
-		return;
+		return false;
 
 	float px = ((float) x - 0)/screenBounds.width;
 	float py = ((float) y - 0)/screenBounds.height;
 
 	if (px <= 0.1){
 		anglePercentage.x = 0.1;
-		angleOffset -= 0.01;
+		angleOffset -= 0.015;
 	}
-	else if (px >= 0.9){
+	else if (px >= 0.99){
 		anglePercentage.x = 0.9;
-		angleOffset += 0.01;
+		angleOffset += 0.015;
+	} else {
+		atEdge = false;
 	}
 
 	anglePercentage.x = 2*px -0.5 + angleOffset;
 	anglePercentage.y = py - 0.5;
 
 	setFocusPosition();
+
+	return atEdge;
 }
 
 void Camera::notifyMousePressed(int x, int y){
@@ -283,9 +293,9 @@ void Camera::setPosition(float x, float y, float z){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return;
 
-	eye.x = x;
-	eye.y = y;
-	eye.z = z;
+	eye.x = x - sceneBounds.width/2;
+	eye.y = y/sceneBounds.height;
+	eye.z = z - sceneBounds.length/2;
 
 	setFocusPosition();
 }

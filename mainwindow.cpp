@@ -54,7 +54,7 @@ void MainWindow::PublicConnects()
 
     //Add Element //botar osignal correto, value changed n�o permite usar a mesma op��o 2x seguidas
 	connect(ui->comboBox , SIGNAL(currentIndexChanged(int)), this, SLOT(novoElemento(int)));
-	connect(ui->aplicar , SIGNAL(clicked()), this, SLOT(aplicar()));
+	connect(ui->adicionar , SIGNAL(clicked()), this, SLOT(aplicar()));
 	connect(ui->posicionar,SIGNAL(clicked()),this,SLOT(positionElement()));
 	//Delet element
 	connect(ui->deletar , SIGNAL(clicked()), this, SLOT(deletarElemento()));
@@ -62,19 +62,27 @@ void MainWindow::PublicConnects()
 	// Camera
 	connect(ui->isomerico, SIGNAL(clicked()), this, SLOT(isomerico()));
 	connect(ui->ortogonal, SIGNAL(clicked()), this, SLOT(ortogonal()));
-
-	connect(ui->cbTexturas, SIGNAL(clicked()), this, SLOT(clickedTextures()));
+	connect(ui->topo,SIGNAL(clicked()),this,SLOT(topo()));
 
 	connect(ui->cbAxis, SIGNAL(clicked()),this,SLOT(clickedAxis()));
 
 	connect(ui->painelGL,SIGNAL(updateSpinBox(float,float,float)),this,SLOT(updatePositionSpinBox(float,float,float)));
+	connect(ui->painelGL,SIGNAL(updateCameraPosition(float,float,float)),this,SLOT(updateCameraSpinBox(float,float,float)));
 
-	connect(ui->posicionarCamera,SIGNAL(clicked()),this,SLOT(positionCamera()));
+	connect(ui->posicionarCamera,SIGNAL(clicked()),this,SLOT(positionCameraByMouse()));
+
+	connect(ui->spinBoxCameraX,SIGNAL(valueChanged(double)),this,SLOT(positionCamera()));
+	connect(ui->spinBoxCameraY,SIGNAL(valueChanged(double)),this,SLOT(positionCamera()));
+	connect(ui->spinBoxCameraZ,SIGNAL(valueChanged(double)),this,SLOT(positionCamera()));
+
+	connect(ui->spinBoxRotation,SIGNAL(valueChanged(int)),this,SLOT(rotateElement()));
 
 	if (ui->isomerico->isChecked())
 		ui->painelGL->setMode(SCENE_MODE_ISOMERIC);
-	else
+	else if(ui->ortogonal->isChecked())
 		ui->painelGL->setMode(SCENE_MODE_NAVIGATION);
+	else
+		ui->painelGL->setMode(SCENE_MODE_TOP);
 
 	// ui->painelGL->setTextures(ui->cbTexturas->isChecked());
 
@@ -84,12 +92,29 @@ void MainWindow::PublicConnects()
 
 }
 
-void MainWindow::positionCamera(){
+void MainWindow::rotateElement(){
+	std::cout << "MainWindow::rotateElement()" << std::endl;
+	ui->painelGL->rotateSolid(ui->spinBoxRotation->value());
+}
 
+void MainWindow::updateRotationSpinBox(float r){
+	ui->spinBoxRotation->setValue((int) r);
+}
+
+void MainWindow::positionCameraByMouse(){
+	ui->painelGL->positionCameraByMouse();
+}
+
+void MainWindow::positionCamera(){
+	std::cout << "MainWindow::positionCamera()" << std::endl;
+	float x = ui->spinBoxCameraX->value();
+	float y = ui->spinBoxCameraY->value();
+	float z = ui->spinBoxCameraZ->value();
+	ui->painelGL->positionCamera(x,y,z);
 }
 
 void MainWindow::tabChanged(int index){
-	
+	ui->painelGL->tabChanged(index);
 }
 
 //preenche a tabela de acordo com os dados lidos do arquivo
@@ -166,7 +191,6 @@ void MainWindow::slotNewFile()
 	ui->painelGL->startTimer();
 
 }
-
 
 //leitura de um arquivo
 void MainWindow::slotOpenFile()
@@ -254,6 +278,18 @@ void MainWindow::novoElemento(int index)
 		ui->spinBoxY->setValue(DEFAULT_CADEIRA_Y);
 		ui->spinBoxZ->setValue(DEFAULT_CADEIRA_Z);
 	}
+	else if(index == 4)
+	{
+		ui->spinBoxBlue->setValue(DEFAULT_GAVETEIRO_BLUE);
+		ui->spinBoxGreen->setValue(DEFAULT_GAVETEIRO_GREEN);
+		ui->spinBoxH->setValue(DEFAULT_GAVETEIRO_HEIGHT);
+		ui->spinBoxL->setValue(DEFAULT_GAVETEIRO_LENGTH);
+		ui->spinBoxRed->setValue(DEFAULT_GAVETEIRO_RED);
+		ui->spinBoxW->setValue(DEFAULT_GAVETEIRO_WIDTH);
+		ui->spinBoxX->setValue(DEFAULT_GAVETEIRO_X);
+		ui->spinBoxY->setValue(DEFAULT_GAVETEIRO_Y);
+		ui->spinBoxZ->setValue(DEFAULT_GAVETEIRO_Z);	
+	}
 
 }
 
@@ -264,13 +300,29 @@ void MainWindow::updatePositionSpinBox(float x, float y, float z){
 	ui->spinBoxZ->setValue(z);
 }
 
-void MainWindow::deletarElemento(int index)
+void MainWindow::updateCameraSpinBox(float x, float y, float z){
+	ui->spinBoxCameraX->setValue(x);
+	ui->spinBoxCameraY->setValue(y);
+	ui->spinBoxCameraZ->setValue(z);
+}
+
+void MainWindow::deletarElemento()
 {
 	ui->painelGL->deleteSolid();
 }
 
 void MainWindow::positionElement(){
-	std::cout << "MainWindow::positionElement()" << std::endl;
+	ui->painelGL->positionSolid(ui->spinBoxX->value(),ui->spinBoxY->value(),ui->spinBoxZ->value());
+}
+
+//saida da aplicacao
+void MainWindow::slotExit()
+{
+	qApp->exit(0);
+}
+
+void MainWindow::aplicar()
+{
 	float values[10];
 	values[0] = ui->spinBoxRed->value();
 	values[1] = ui->spinBoxGreen->value();
@@ -282,25 +334,20 @@ void MainWindow::positionElement(){
 	values[7] = ui->spinBoxY->value();
 	values[8] = ui->spinBoxZ->value();
 	values[9] = ui->comboBox->currentIndex();
+	values[10] = ui->spinBoxRotation->value();
 
 	//ui->painelGL->getValues(values);
 	ui->painelGL->setValues(values);
 }
 
-//saida da aplicacao
-void MainWindow::slotExit()
-{
-	qApp->exit(0);
-}
-
-void MainWindow::aplicar()
-{
-	ui->painelGL->finishEditing();
-}
-
 void MainWindow::isomerico()
 {
 	ui->painelGL->setMode(SCENE_MODE_ISOMERIC);
+}
+
+void MainWindow::topo()
+{
+	ui->painelGL->setMode(SCENE_MODE_TOP);
 }
 
 void MainWindow::ortogonal()
@@ -309,7 +356,7 @@ void MainWindow::ortogonal()
 }
 
 void MainWindow::clickedTextures(){
-	ui->painelGL->setTextures(ui->cbTexturas->isChecked());
+
 }
 
 void MainWindow::clickedAxis(){

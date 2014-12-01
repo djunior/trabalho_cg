@@ -213,6 +213,7 @@ void Chair::draw(){
 	glPushMatrix();
 
 	glTranslatef(x,y,z);
+	rotate();
 
 	GLuint tId = getTextureHandler()->getTextureId("wood.bmp");
 	glBindTexture(GL_TEXTURE_2D,tId);

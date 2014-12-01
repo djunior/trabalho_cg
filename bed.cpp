@@ -21,12 +21,6 @@ void Bed::drawBase(){
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
-	float tx1 = 10/(width+20);
-	float tx2 = (width+10)/(width+20);
-
-	float tz1 = 10/(length+20);
-	float tz2 = (length+10)/(length+20);
-
 	float h = height*0.6;
 
 	GLuint tId = getTextureHandler()->getTextureId("wood.bmp");
@@ -230,6 +224,7 @@ void Bed::draw(){
 	glPushMatrix();
 
 	glTranslatef(x,y,z);
+	rotate();
 
 	drawBase();
 	drawTop();

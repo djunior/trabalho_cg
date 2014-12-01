@@ -17,6 +17,7 @@ HEADERS += basic_includes.h \
            table.h \
            bed.h \
            chair.h \
+           drawer.h \
            textureHandler.h \
            ui_mainwindow.h \
            utils.h
@@ -31,6 +32,7 @@ SOURCES += camera.cpp \
            table.cpp \
            bed.cpp \
            chair.cpp \
+           drawer.cpp \
            textureHandler.cpp
 
 

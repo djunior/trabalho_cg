@@ -42,17 +42,22 @@ public slots:
 	virtual void slotOpenFile();
 	virtual void slotSaveFile();
 	virtual void novoElemento(int);
-	virtual void deletarElemento(int);
+	virtual void deletarElemento();
 	virtual void positionElement();
 	virtual void aplicar();
     virtual void slotExit();        //sair app pelo menu principal
 	virtual void isomerico();
 	virtual void ortogonal();
+	virtual void topo();
 	virtual void clickedTextures();
 	virtual void clickedAxis();
 	virtual void updatePositionSpinBox(float,float,float);
 	virtual void tabChanged(int);
 	virtual void positionCamera();
+	virtual void positionCameraByMouse();
+	virtual void rotateElement();
+	virtual void updateCameraSpinBox(float,float,float);
+	virtual void updateRotationSpinBox(float);
 };
 
 #endif // MAINWINDOW_H

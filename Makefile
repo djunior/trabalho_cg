@@ -58,6 +58,7 @@ SOURCES       = camera.cpp \
 		table.cpp \
 		bed.cpp \
 		chair.cpp \
+		drawer.cpp \
 		textureHandler.cpp moc_mainwindow.cpp \
 		moc_MeuPainelOpenGL.cpp
 OBJECTS       = camera.o \
@@ -70,6 +71,7 @@ OBJECTS       = camera.o \
 		table.o \
 		bed.o \
 		chair.o \
+		drawer.o \
 		textureHandler.o \
 		moc_mainwindow.o \
 		moc_MeuPainelOpenGL.o
@@ -203,6 +205,7 @@ DIST          = ../../Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		table.h \
 		bed.h \
 		chair.h \
+		drawer.h \
 		textureHandler.h \
 		ui_mainwindow.h \
 		utils.h camera.cpp \
@@ -215,6 +218,7 @@ DIST          = ../../Qt/5.4/gcc_64/mkspecs/features/spec_pre.prf \
 		table.cpp \
 		bed.cpp \
 		chair.cpp \
+		drawer.cpp \
 		textureHandler.cpp
 QMAKE_TARGET  = trabalho_cg
 DESTDIR       = #avoid trailing-slash linebreak
@@ -511,8 +515,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents basic_includes.h camera.h editor.h element.h mainwindow.h MeuPainelOpenGL.h scene.h solid.h table.h bed.h chair.h textureHandler.h ui_mainwindow.h utils.h $(DISTDIR)/
-	$(COPY_FILE) --parents camera.cpp editor.cpp main.cpp mainwindow.cpp MeuPainelOpenGL.cpp scene.cpp solid.cpp table.cpp bed.cpp chair.cpp textureHandler.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents basic_includes.h camera.h editor.h mainwindow.h MeuPainelOpenGL.h scene.h solid.h table.h bed.h chair.h drawer.h textureHandler.h ui_mainwindow.h utils.h $(DISTDIR)/
+	$(COPY_FILE) --parents camera.cpp editor.cpp main.cpp mainwindow.cpp MeuPainelOpenGL.cpp scene.cpp solid.cpp table.cpp bed.cpp chair.cpp drawer.cpp textureHandler.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -648,6 +652,28 @@ moc_mainwindow.cpp: ../../Qt/5.4/gcc_64/include/QtWidgets/QMainWindow \
 		../../Qt/5.4/gcc_64/include/QtCore/qdir.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qfileinfo.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qdialog.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QDialog \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QDialogButtonBox \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QFormLayout \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qformlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QLayout \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QList \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QLineEdit \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlineedit.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qframe.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextcursor.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextformat.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qpen.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextoption.h \
+		../../Qt/5.4/gcc_64/include/QtGui/QIntValidator \
+		../../Qt/5.4/gcc_64/include/QtGui/qvalidator.h \
+		../../Qt/5.4/gcc_64/include/QtCore/qregularexpression.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QDebug \
 		mainwindow.h
 	/home/djunior/Qt/5.4/gcc_64/bin/moc $(DEFINES) -I/home/djunior/Qt/5.4/gcc_64/mkspecs/linux-g++ -I/home/djunior/workspace/trabalho_cg -I/home/djunior/workspace/trabalho_cg -I/home/djunior/Qt/5.4/gcc_64/include -I/home/djunior/Qt/5.4/gcc_64/include/QtOpenGL -I/home/djunior/Qt/5.4/gcc_64/include/QtWidgets -I/home/djunior/Qt/5.4/gcc_64/include/QtGui -I/home/djunior/Qt/5.4/gcc_64/include/QtCore mainwindow.h -o moc_mainwindow.cpp
 
@@ -660,6 +686,7 @@ moc_MeuPainelOpenGL.cpp: utils.h \
 		table.h \
 		bed.h \
 		chair.h \
+		drawer.h \
 		../../Qt/5.4/gcc_64/include/QtGui/QMouseEvent \
 		../../Qt/5.4/gcc_64/include/QtGui/qevent.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qwindowdefs.h \
@@ -744,6 +771,9 @@ moc_MeuPainelOpenGL.cpp: utils.h \
 		../../Qt/5.4/gcc_64/include/QtCore/QTimer \
 		../../Qt/5.4/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qbasictimer.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QCoreApplication \
+		../../Qt/5.4/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt/5.4/gcc_64/include/QtCore/qeventloop.h \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/QGLWidget \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/qgl.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qopengl.h \
@@ -798,6 +828,7 @@ ui_mainwindow.h: mainwindow.ui \
 		table.h \
 		bed.h \
 		chair.h \
+		drawer.h \
 		../../Qt/5.4/gcc_64/include/QtGui/QMouseEvent \
 		../../Qt/5.4/gcc_64/include/QtGui/qevent.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qwindowdefs.h \
@@ -882,6 +913,9 @@ ui_mainwindow.h: mainwindow.ui \
 		../../Qt/5.4/gcc_64/include/QtCore/QTimer \
 		../../Qt/5.4/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qbasictimer.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QCoreApplication \
+		../../Qt/5.4/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt/5.4/gcc_64/include/QtCore/qeventloop.h \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/QGLWidget \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/qgl.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qopengl.h \
@@ -942,7 +976,8 @@ editor.o: editor.cpp editor.h \
 		camera.h \
 		table.h \
 		bed.h \
-		chair.h
+		chair.h \
+		drawer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o editor.o editor.cpp
 
 main.o: main.cpp ../../Qt/5.4/gcc_64/include/QtWidgets/QApplication \
@@ -1061,7 +1096,29 @@ main.o: main.cpp ../../Qt/5.4/gcc_64/include/QtWidgets/QApplication \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qfiledialog.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qdir.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qfileinfo.h \
-		../../Qt/5.4/gcc_64/include/QtWidgets/qdialog.h
+		../../Qt/5.4/gcc_64/include/QtWidgets/qdialog.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QDialog \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QDialogButtonBox \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QFormLayout \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qformlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QLayout \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QList \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QLineEdit \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlineedit.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qframe.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextcursor.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextformat.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qpen.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextoption.h \
+		../../Qt/5.4/gcc_64/include/QtGui/QIntValidator \
+		../../Qt/5.4/gcc_64/include/QtGui/qvalidator.h \
+		../../Qt/5.4/gcc_64/include/QtCore/qregularexpression.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -1174,6 +1231,28 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qdir.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qfileinfo.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qdialog.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QDialog \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QDialogButtonBox \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QFormLayout \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qformlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QLayout \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QList \
+		../../Qt/5.4/gcc_64/include/QtWidgets/QLineEdit \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qlineedit.h \
+		../../Qt/5.4/gcc_64/include/QtWidgets/qframe.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextcursor.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextformat.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qpen.h \
+		../../Qt/5.4/gcc_64/include/QtGui/qtextoption.h \
+		../../Qt/5.4/gcc_64/include/QtGui/QIntValidator \
+		../../Qt/5.4/gcc_64/include/QtGui/qvalidator.h \
+		../../Qt/5.4/gcc_64/include/QtCore/qregularexpression.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QDebug \
 		ui_mainwindow.h \
 		MeuPainelOpenGL.h \
 		utils.h \
@@ -1185,10 +1264,14 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		table.h \
 		bed.h \
 		chair.h \
+		drawer.h \
 		../../Qt/5.4/gcc_64/include/QtGui/QMouseEvent \
 		../../Qt/5.4/gcc_64/include/QtCore/QTimer \
 		../../Qt/5.4/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qbasictimer.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QCoreApplication \
+		../../Qt/5.4/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt/5.4/gcc_64/include/QtCore/qeventloop.h \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/QGLWidget \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/qgl.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qopengl.h \
@@ -1197,8 +1280,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qopenglext.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qpaintengine.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qpainter.h \
-		../../Qt/5.4/gcc_64/include/QtGui/qtextoption.h \
-		../../Qt/5.4/gcc_64/include/QtGui/qpen.h \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/qglcolormap.h \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/qtopenglglobal.h \
 		../../Qt/5.4/gcc_64/include/QtGui/QSurfaceFormat \
@@ -1209,8 +1290,6 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qactiongroup.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/QApplication \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qapplication.h \
-		../../Qt/5.4/gcc_64/include/QtCore/qcoreapplication.h \
-		../../Qt/5.4/gcc_64/include/QtCore/qeventloop.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qguiapplication.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qinputmethod.h \
@@ -1224,14 +1303,11 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qstyleoption.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		../../Qt/5.4/gcc_64/include/QtGui/qvalidator.h \
-		../../Qt/5.4/gcc_64/include/QtCore/qregularexpression.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qslider.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qabstractslider.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qstyle.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qtabbar.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qrubberband.h \
-		../../Qt/5.4/gcc_64/include/QtWidgets/qframe.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../Qt/5.4/gcc_64/include/QtWidgets/QDoubleSpinBox \
 		../../Qt/5.4/gcc_64/include/QtWidgets/qspinbox.h \
@@ -1269,6 +1345,7 @@ MeuPainelOpenGL.o: MeuPainelOpenGL.cpp MeuPainelOpenGL.h \
 		table.h \
 		bed.h \
 		chair.h \
+		drawer.h \
 		../../Qt/5.4/gcc_64/include/QtGui/QMouseEvent \
 		../../Qt/5.4/gcc_64/include/QtGui/qevent.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qwindowdefs.h \
@@ -1353,6 +1430,9 @@ MeuPainelOpenGL.o: MeuPainelOpenGL.cpp MeuPainelOpenGL.h \
 		../../Qt/5.4/gcc_64/include/QtCore/QTimer \
 		../../Qt/5.4/gcc_64/include/QtCore/qtimer.h \
 		../../Qt/5.4/gcc_64/include/QtCore/qbasictimer.h \
+		../../Qt/5.4/gcc_64/include/QtCore/QCoreApplication \
+		../../Qt/5.4/gcc_64/include/QtCore/qcoreapplication.h \
+		../../Qt/5.4/gcc_64/include/QtCore/qeventloop.h \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/QGLWidget \
 		../../Qt/5.4/gcc_64/include/QtOpenGL/qgl.h \
 		../../Qt/5.4/gcc_64/include/QtGui/qopengl.h \
@@ -1397,7 +1477,9 @@ scene.o: scene.cpp scene.h \
 		camera.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o scene.o scene.cpp
 
-solid.o: solid.cpp solid.h
+solid.o: solid.cpp solid.h \
+		utils.h \
+		textureHandler.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o solid.o solid.cpp
 
 table.o: table.cpp table.h \
@@ -1417,6 +1499,12 @@ chair.o: chair.cpp chair.h \
 		textureHandler.h \
 		solid.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o chair.o chair.cpp
+
+drawer.o: drawer.cpp drawer.h \
+		solid.h \
+		utils.h \
+		textureHandler.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o drawer.o drawer.cpp
 
 textureHandler.o: textureHandler.cpp textureHandler.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o textureHandler.o textureHandler.cpp

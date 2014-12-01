@@ -14,6 +14,7 @@
 #include "table.h"
 #include "bed.h"
 #include "chair.h"
+#include "drawer.h"
 
 class Editor{
 private:
@@ -36,7 +37,7 @@ public:
 	void setMainScene(Scene*);
 	void createSolid(float,float,float);
 	void createSolid(SolidType,float,float,float);
-	void createSolid(SolidType,float,float,float,float,float,float);
+	void createSolid(SolidType,float,float,float,float,float,float,float);
 	void setMousePosition(int,int);
 	void init();
 	void draw();
@@ -49,6 +50,7 @@ public:
 	void stopEditing();
 	bool isEditing();
 	void setSolidPosition(float,float,float);
+	void removeSolid();
 
 	Solid* getActiveSolid();
 	//void setSolidPosition(float x, float y, float z);
