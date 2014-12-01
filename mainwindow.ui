@@ -27,7 +27,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="movable">
      <bool>false</bool>
@@ -309,7 +309,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>730</y>
+        <y>590</y>
         <width>251</width>
         <height>31</height>
        </rect>
@@ -675,7 +675,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>690</y>
+        <y>550</y>
         <width>251</width>
         <height>31</height>
        </rect>
@@ -688,7 +688,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>650</y>
+        <y>510</y>
         <width>251</width>
         <height>27</height>
        </rect>
