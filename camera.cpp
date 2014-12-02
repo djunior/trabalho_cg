@@ -116,10 +116,52 @@ void Camera::setSceneBounds(float w, float h, float l){
 }
 
 void Camera::setupCamera(){
+	Coord3<GLdouble> F,Up,S,SNorm,U;
+	F.x = (GLdouble) focus.x - (GLdouble) eye.x;
+	F.y = (GLdouble) focus.y - (GLdouble) eye.y;
+	F.z = (GLdouble) focus.z - (GLdouble) eye.z;
+
+	GLdouble F_norm = sqrt( (F.x*F.x) + (F.y*F.y) + (F.z*F.z) );
+
+	F.x = F.x/F_norm;
+	F.y = F.y/F_norm;
+	F.z = F.z/F_norm;
+
+	GLdouble Up_norm = sqrt( (normal.x*normal.x) + (normal.y*normal.y) + (normal.z*normal.z) );
+
+	Up.x = ((GLdouble) normal.x)/Up_norm;
+	Up.y = ((GLdouble) normal.y)/Up_norm;
+	Up.z = ((GLdouble) normal.z)/Up_norm;
+
+	S.x = (F.y*Up.z - F.z*Up.y);
+	S.y = (F.z*Up.x - F.x*Up.z);
+	S.z = (F.x*Up.y - F.y*Up.z);
+
+	GLdouble S_norm = sqrt( (S.x*S.x) + (S.y*S.y) + (S.z*S.z));
+
+	SNorm.x = S.x/S_norm;
+	SNorm.y = S.y/S_norm;
+	SNorm.z = S.z/S_norm;
+
+	U.x = (SNorm.y*F.z - SNorm.z*F.y);
+	U.y = (SNorm.z*F.x - SNorm.x*F.z);
+	U.z = (SNorm.x*F.y - SNorm.y*F.x);
+
+	GLdouble m[16] = {
+		S.x,U.x,-F.x,0.0,
+		S.y,U.y,-F.y,0.0,
+		S.z,U.z,-F.z,0.0,
+		0.0,0.0, 0.0,1.0};
+
+	glMultMatrixd(m);
+	glTranslated(-eye.x,-eye.y,-eye.z);
+
+/*
 	gluLookAt(
 		eye.x,eye.y,eye.z,  // eye
 		focus.x,focus.y,focus.z,  // focus
 		normal.x,normal.y,normal.z); // normal
+	*/
 }
 
 void Camera::moveForward( bool (*callback)(float,float,float) ){
