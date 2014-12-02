@@ -116,6 +116,9 @@ void Camera::setSceneBounds(float w, float h, float l){
 }
 
 void Camera::setupCamera(){
+/*
+
+	// Tentativa de resolver um bug que ocorre no Mac OSX quando o mouse está acima de 50% da tela
 	Coord3<GLdouble> F,Up,S,SNorm,U;
 	F.x = (GLdouble) focus.x - (GLdouble) eye.x;
 	F.y = (GLdouble) focus.y - (GLdouble) eye.y;
@@ -155,13 +158,13 @@ void Camera::setupCamera(){
 
 	glMultMatrixd(m);
 	glTranslated(-eye.x,-eye.y,-eye.z);
+*/
 
-/*
 	gluLookAt(
 		eye.x,eye.y,eye.z,  // eye
 		focus.x,focus.y,focus.z,  // focus
 		normal.x,normal.y,normal.z); // normal
-	*/
+
 }
 
 void Camera::moveForward( bool (*callback)(float,float,float) ){
@@ -252,7 +255,7 @@ bool Camera::notifyMouseMotion(int x,int y){
 		anglePercentage.x = 0.1;
 		angleOffset -= 0.015;
 	}
-	else if (px >= 0.99){
+	else if (px >= 0.9){
 		anglePercentage.x = 0.9;
 		angleOffset += 0.015;
 	} else {
@@ -260,7 +263,11 @@ bool Camera::notifyMouseMotion(int x,int y){
 	}
 
 	anglePercentage.x = 2*px -0.5 + angleOffset;
-	anglePercentage.y = py - 0.5;
+	#ifdef __APPLE__
+		anglePercentage.y = 0.01;
+	#else
+		anglePercentage.y = py - 0.5;
+	#endif
 
 	setFocusPosition();
 
