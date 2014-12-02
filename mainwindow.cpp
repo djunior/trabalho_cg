@@ -332,21 +332,24 @@ void MainWindow::slotExit()
 
 void MainWindow::aplicar()
 {
-	float values[10];
-	values[0] = ui->spinBoxRed->value();
-	values[1] = ui->spinBoxGreen->value();
-	values[2] = ui->spinBoxBlue->value();
-	values[3] = ui->spinBoxH->value();
-	values[4] = ui->spinBoxW->value();
-	values[5] = ui->spinBoxL->value();
-	values[6] = ui->spinBoxX->value();
-	values[7] = ui->spinBoxY->value();
-	values[8] = ui->spinBoxZ->value();
-	values[9] = ui->comboBox->currentIndex();
-	values[10] = ui->spinBoxRotation->value();
+	// float values[10];
+	// values[0] = ui->spinBoxRed->value();
+	// values[1] = ui->spinBoxGreen->value();
+	// values[2] = ui->spinBoxBlue->value();
+	// values[3] = ui->spinBoxH->value();
+	// values[4] = ui->spinBoxW->value();
+	// values[5] = ui->spinBoxL->value();
+	// values[6] = ui->spinBoxX->value();
+	// values[7] = ui->spinBoxY->value();
+	// values[8] = ui->spinBoxZ->value();
+	// values[9] = ui->comboBox->currentIndex();
+	// values[10] = (float) ui->spinBoxRotation->value();
 
 	//ui->painelGL->getValues(values);
-	ui->painelGL->setValues(values);
+	ui->painelGL->addSolid(
+		ui->comboBox->currentIndex(),
+		ui->spinBoxX->value(),ui->spinBoxY->value(),ui->spinBoxZ->value(),
+		ui->spinBoxW->value(),ui->spinBoxH->value(),ui->spinBoxL->value(),ui->spinBoxRotation->value());
 }
 
 void MainWindow::isomerico()

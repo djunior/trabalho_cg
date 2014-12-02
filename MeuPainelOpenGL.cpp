@@ -260,22 +260,35 @@ void MeuPainelOpenGL::rotateSolid(int r){
     s->rotation = (float) r;
 }
 
+void MeuPainelOpenGL::addSolid(int t, float x, float y, float z, float w, float h, float l, int r){
+    editor.finalize();
+    editor.createSolid((SolidType) t,x,y,z,w,h,l,r);
+    editor.startEditing();    
+
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    width = w;
+    height = h;
+    length = l;
+}
+
 void MeuPainelOpenGL::setValues(float values[11])
 {
-	red = values[0];
-	green = values[1];
-	blue = values[2];
-	height = values[3];
-	width = values[4];
-	length = values[5];
-	x = values[6];
-	y = values[7];
-	z = values[8];
-    float rotation = values[10];
+	// red = values[0];
+	// green = values[1];
+	// blue = values[2];
+	// height = values[3];
+	// width = values[4];
+	// length = values[5];
+	// x = values[6];
+	// y = values[7];
+	// z = values[8];
+ //    float rotation = values[10];
 
-    editor.finalize();
-    editor.createSolid((SolidType) values[9],x,y,z,width,height,length,rotation);
-    editor.startEditing();
+ //    editor.finalize();
+ //    editor.createSolid((SolidType) values[9],x,y,z,width,height,length,rotation);
+ //    editor.startEditing();
 }
 
 void MeuPainelOpenGL::positionSolid(float x,float y,float z){

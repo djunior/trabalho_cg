@@ -113,6 +113,7 @@ public:
     void paintGL();
 	void getValues(float[11]);
 	void setValues(float[11]);
+	void addSolid(int t, float x, float y, float z, float w, float h, float l, int r);
 	void setMode(SceneMode);
 	void setTextures(bool);
 	void showAxis(bool);

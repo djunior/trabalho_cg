@@ -20,7 +20,6 @@ HEADERS += basic_includes.h \
            drawer.h \
            dresser.h \
            textureHandler.h \
-           ui_mainwindow.h \
            utils.h
 FORMS += mainwindow.ui
 SOURCES += camera.cpp \
