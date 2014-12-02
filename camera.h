@@ -25,6 +25,7 @@ public:
 	void setVisionAngle(float);
 	float getVisionAngle();
 	float getVerticalAngle();
+	float getHorizontalAngle();
 
 	void notifyMousePressed(int, int);
 	void notifyMouseDrag(int, int);

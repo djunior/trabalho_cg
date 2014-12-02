@@ -142,7 +142,7 @@ void Editor::clear(){
 }
 
 void Editor::save(std::string filename){
-	std::ofstream output(filename);
+	std::ofstream output(filename.c_str());
 	float sceneWidth, sceneHeight, sceneLength;
 
 	mainScene->getBounds(&sceneWidth,&sceneHeight,&sceneLength);
@@ -161,8 +161,7 @@ void Editor::save(std::string filename){
 }
 
 void Editor::load(std::string filename){
-	std::cout << "Editor::load(std::string filename = " << filename << ")" << std::endl;
-	std::ifstream input( filename );
+	std::ifstream input( filename.c_str() );
 	
 	//primeira linha
 	int sceneWidth, sceneHeight, sceneLength;

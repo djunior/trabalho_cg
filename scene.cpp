@@ -10,6 +10,7 @@ Scene::Scene(){
 	length = 1;
 	scale = 1;
 	axis = false;
+	walls = true;
 	mode = SCENE_MODE_NAVIGATION;
 }
 
@@ -154,44 +155,100 @@ void Scene::drawBase(){
 	GLuint tId = getTextureHandler()->getTextureId("carpet.bmp");
 	glBindTexture(GL_TEXTURE_2D,tId);
 
+	// int viewport[4];
+	// GLdouble modelview[16],projection[16];
+	// Coord3<GLdouble> screen1, screen2, screen3, screen4;
+
+	// glGetIntegerv(GL_VIEWPORT, viewport); 
+	// glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
+	// glGetDoublev (GL_PROJECTION_MATRIX, projection);
+
+	// gluProject(0.0,0.0,0.0, modelview,  projection,  viewport,  &screen1.x,  &screen1.y,  &screen1.z);
+	// gluProject(width,0.0,0.0, modelview,  projection,  viewport,  &screen2.x,  &screen2.y,  &screen2.z);
+	// gluProject(0.0,0.0,length, modelview,  projection,  viewport,  &screen3.x,  &screen3.y,  &screen3.z);
+	// gluProject(width,0.0,length, modelview,  projection,  viewport,  &screen4.x,  &screen4.y,  &screen4.z);
+
+	//int max
+
+	float hAngle = camera.getHorizontalAngle();
+	float cosValue = cos(hAngle), sinValue = sin(hAngle);
+
 	glColor3f(1.0,1.0,1.0);
 	glBegin(GL_QUADS);
 		//Chao
 		glColor3f(1.0,1.0,1.0);
 
 		glTexCoord2f(0.0,0.0);
-		glVertex3f(0.0,0.0,0.0);
+		glVertex3f(0.0,-0.01,0.0);
 
 		glTexCoord2f(1.0,0.0);
-		glVertex3f(width,0.0,0.0);
+		glVertex3f(width,-0.01,0.0);
 
 		glTexCoord2f(1.0,1.0);
-		glVertex3f(width,0.0,length);
+		glVertex3f(width,-0.01,length);
 		
 		glTexCoord2f(0.0,1.0);
-		glVertex3f(0.0,0.0,length);
+		glVertex3f(0.0,-0.01,length);
+	glEnd();
 
-		glColor3f(1.0,1.0,1.0);
+	GLuint tBricksId = getTextureHandler()->getTextureId("bricks.bmp");
+	glBindTexture(GL_TEXTURE_2D,tBricksId);
+	glColor3f(1.0,1.0,1.0);
 
-		// glVertex3f(0.0,0.0,0.0);
-		// glVertex3f(width,0.0,0.0);
-		// glVertex3f(width,height,0.0);
-		// glVertex3f(0.0,height,0.0);
+	glBegin(GL_QUADS);
+		if (mode == SCENE_MODE_NAVIGATION || (mode == SCENE_MODE_ISOMERIC && sinValue > 0)){
+			glTexCoord2f(0.0,0.0);
+			glVertex3f(0.0,0.0,0.0);
 
-		// glVertex3f(0.0,0.0,0.0);
-		// glVertex3f(0.0,0.0,length);
-		// glVertex3f(0.0,height,length);
-		// glVertex3f(0.0,height,0.0);			
-
-		if (mode == SCENE_MODE_NAVIGATION){
+			glTexCoord2f(1.0,0.0);
 			glVertex3f(width,0.0,0.0);
-			glVertex3f(width,0.0,length);
-			glVertex3f(width,height,length);
+
+			glTexCoord2f(1.0,1.0);
 			glVertex3f(width,height,0.0);
 
+			glTexCoord2f(0.0,1.0);
+			glVertex3f(0.0,height,0.0);
+		}
+
+		if (mode == SCENE_MODE_NAVIGATION || (mode == SCENE_MODE_ISOMERIC && cosValue > 0)){
+			glTexCoord2f(0.0,0.0);
+			glVertex3f(0.0,0.0,0.0);
+
+			glTexCoord2f(1.0,0.0);
 			glVertex3f(0.0,0.0,length);
+
+			glTexCoord2f(1.0,1.0);
 			glVertex3f(0.0,height,length);
+
+			glTexCoord2f(0.0,1.0);
+			glVertex3f(0.0,height,0.0);
+		}
+
+		if (mode == SCENE_MODE_NAVIGATION || (mode == SCENE_MODE_ISOMERIC && cosValue < 0)){
+			glTexCoord2f(1.0,0.0);
+			glVertex3f(width,0.0,0.0);
+
+			glTexCoord2f(0.0,0.0);
+			glVertex3f(width,0.0,length);
+
+			glTexCoord2f(0.0,1.0);
 			glVertex3f(width,height,length);
+
+			glTexCoord2f(1.0,1.0);
+			glVertex3f(width,height,0.0);
+		}
+
+		if (mode == SCENE_MODE_NAVIGATION || (mode == SCENE_MODE_ISOMERIC && sinValue < 0)){
+			glTexCoord2f(0.0,0.0);
+			glVertex3f(0.0,0.0,length);
+
+			glTexCoord2f(0.0,1.0);
+			glVertex3f(0.0,height,length);
+
+			glTexCoord2f(1.0,1.0);
+			glVertex3f(width,height,length);
+
+			glTexCoord2f(1.0,0.0);
 			glVertex3f(width,0.0,length);
 		}
 
@@ -355,6 +412,50 @@ void Scene::convertScreenToWorldCoord(int x,int y, float*wx, float *wy, float* w
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 
+}
+
+void Scene::convertWorldToScreenCoord(float x, float y, float z, int* sx, int*sy, int* sz){
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(-width,width,-height,height,-length,length);
+
+	camera.setupCamera();
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glTranslatef(-width/2,-height/2,-length/2);
+
+	int viewport[4];
+	GLdouble modelview[16],projection[16];
+	Coord3<GLdouble> screenCoord;
+
+	glGetIntegerv(GL_VIEWPORT, viewport); 
+	glGetDoublev (GL_MODELVIEW_MATRIX, modelview);
+	glGetDoublev (GL_PROJECTION_MATRIX, projection);
+
+
+	gluProject((GLdouble) x,(GLdouble) y,(GLdouble) z, modelview,  projection,  viewport,  &screenCoord.x,  &screenCoord.y,  &screenCoord.z);
+
+	std::cout << "ScreenCoord = (" << screenCoord.x << ", " << screenCoord.y << ", " << screenCoord.z << ")" << std::endl;
+	// gluUnProject(x,viewport[3] - y,  1.0, modelview,  projection,  viewport,  &wc2.x,  &wc2.y,  &wc2.z);
+
+	// double f = wc1.y / ( wc2.y - wc1.y );
+	// double x2d = wc1.x - f * (wc2.x - wc1.x );
+	// double z2d = wc1.z - f * (wc2.z - wc1.z );
+	*sx = screenCoord.x;
+	*sy = screenCoord.y;
+	*sz = screenCoord.z;
+
+	// *wx = (float) x2d;
+	// *wy = (float) 0;
+	// *wz = (float) z2d;
+
+	//Retornando as matrizes aos valores iniciais
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();	
 }
 
 bool Scene::isSolidInsideScene(Solid*s){

@@ -205,7 +205,7 @@ public:
         tab_2->setObjectName(QStringLiteral("tab_2"));
         deletar = new QPushButton(tab_2);
         deletar->setObjectName(QStringLiteral("deletar"));
-        deletar->setGeometry(QRect(20, 730, 251, 31));
+        deletar->setGeometry(QRect(20, 590, 251, 31));
         spinBoxH = new QDoubleSpinBox(tab_2);
         spinBoxH->setObjectName(QStringLiteral("spinBoxH"));
         spinBoxH->setGeometry(QRect(210, 260, 62, 22));
@@ -296,10 +296,10 @@ public:
         line->setFrameShadow(QFrame::Sunken);
         posicionar = new QPushButton(tab_2);
         posicionar->setObjectName(QStringLiteral("posicionar"));
-        posicionar->setGeometry(QRect(20, 690, 251, 31));
+        posicionar->setGeometry(QRect(20, 550, 251, 31));
         adicionar = new QPushButton(tab_2);
         adicionar->setObjectName(QStringLiteral("adicionar"));
-        adicionar->setGeometry(QRect(20, 650, 251, 27));
+        adicionar->setGeometry(QRect(20, 510, 251, 27));
         label_21 = new QLabel(tab_2);
         label_21->setObjectName(QStringLiteral("label_21"));
         label_21->setGeometry(QRect(10, 480, 211, 21));
@@ -364,7 +364,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

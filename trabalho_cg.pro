@@ -40,7 +40,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QT += opengl
 
-LIBS += -lglut -lGLU
+macx {
+  LIBS += -framework GLUT
+} else {
+  LIBS += -lglut -lGLU  
+}
 
 CONFIG += c++11
 

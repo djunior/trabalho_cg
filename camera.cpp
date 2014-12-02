@@ -105,6 +105,10 @@ float Camera::getVerticalAngle(){
 	return anglePercentage.y*M_PI/2;
 }
 
+float Camera::getHorizontalAngle(){
+	return anglePercentage.x*M_PI/2;
+}
+
 void Camera::setSceneBounds(float w, float h, float l){
 	sceneBounds.width = w;
 	sceneBounds.height = h;
@@ -244,6 +248,9 @@ void Camera::notifyMouseDrag(int x,int y){
 
 	anglePercentage.x += px;
 	anglePercentage.y += py;
+
+	//std::cout << "cos = " << cos(M_PI*anglePercentage.x/2) << "," << sin(anglePercentage.x*M_PI/2) <<std::endl;
+
 
 	setFocusPosition();
 }

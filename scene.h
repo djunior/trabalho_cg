@@ -27,6 +27,7 @@ private:
 	void buildQuadrantList();
 
 	bool axis;
+	bool walls;
 
 public:
 	Scene();
@@ -49,6 +50,7 @@ public:
 	void setScreenPosition(float,float);
 	void showAxis(bool b);
 	void convertScreenToWorldCoord(int,int,float*,float*,float*);
+	void convertWorldToScreenCoord(float,float,float,int*,int*,int*);
 	bool isSolidInsideScene(Solid*);
 	bool isInsideScene(float,float,float,float,float,float);
 	void setCameraPosition(float,float,float);

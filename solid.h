@@ -2,7 +2,6 @@
 
 #define __SOLID_H__
 
-#include <GL/glut.h>
 #include <iostream>
 
 #include "utils.h"
