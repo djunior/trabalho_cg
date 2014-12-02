@@ -43,9 +43,9 @@ QT += opengl
 
 macx {
   LIBS += -framework GLUT
+	CONFIG -= app_bundle
 } else {
   LIBS += -lglut -lGLU  
 }
 
 CONFIG += c++11
-
