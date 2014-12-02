@@ -1,7 +1,7 @@
 #ifndef basic_includes_h
 #define basic_includes_h
 
-#ifndef __linux__
+#ifdef _WIN32
 #include "C:\freeglut\include\GL\freeglut.h"
 #endif
 
