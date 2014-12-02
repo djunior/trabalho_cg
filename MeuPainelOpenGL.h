@@ -41,7 +41,7 @@
 #define DEFAULT_GAVETEIRO_WIDTH			40
 #define DEFAULT_GAVETEIRO_LENGTH		40
 
-#ifndef __linux__
+#ifdef _WIN32
 #include "C:\freeglut\include\GL\freeglut.h"
 #endif
 
@@ -60,7 +60,6 @@ using namespace std;
 
 #include "utils.h"
 #include <vector>
-#include <array>
 
 #include "solid.h"
 #include "scene.h"
@@ -75,13 +74,7 @@ using namespace std;
 
 #define MAX_BUFFER 1000
 
-
 #include <QGLWidget>
-#ifdef __linux__
-#include <GL/glut.h>
-#else
-#include <gl/GLU.h>
-#endif
 
 /* Caro David:
 As funções do OpenGL geralmente declaradas e aplicadas a partir da main.cpp devem ser implementadas nessa classe,
