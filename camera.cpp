@@ -171,8 +171,8 @@ void Camera::moveForward( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
 	float angle = anglePercentage.x*M_PI/2;
-	float eyeX = eye.x - 2*cos(angle);
-	float eyeZ = eye.z - 2*sin(angle);
+	float eyeX = eye.x - 5*cos(angle);
+	float eyeZ = eye.z - 5*sin(angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
 		eye.x = eyeX;
@@ -187,8 +187,8 @@ void Camera::moveBackward( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
 	float angle = anglePercentage.x*M_PI/2;
-	float eyeX = eye.x + 2*cos(angle);
-	float eyeZ = eye.z + 2*sin(angle);
+	float eyeX = eye.x + 5*cos(angle);
+	float eyeZ = eye.z + 5*sin(angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
 		eye.x = eyeX;
@@ -202,8 +202,8 @@ void Camera::moveLeft( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
 	float angle = anglePercentage.x*M_PI/2;
-	float eyeX = eye.x - 2*cos(M_PI/2 - angle);
-	float eyeZ= eye.z + 2*sin(M_PI/2 - angle);
+	float eyeX = eye.x - 5*cos(M_PI/2 - angle);
+	float eyeZ= eye.z + 5*sin(M_PI/2 - angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
 		eye.x = eyeX;
@@ -217,8 +217,8 @@ void Camera::moveRight( bool (*callback)(float,float,float) ){
 	if (mode != SCENE_MODE_NAVIGATION)
 		return; 
 	float angle = anglePercentage.x*M_PI/2;
-	float eyeX = eye.x + 2*cos(M_PI/2 - angle);
-	float eyeZ = eye.z - 2*sin(M_PI/2 - angle);
+	float eyeX = eye.x + 5*cos(M_PI/2 - angle);
+	float eyeZ = eye.z - 5*sin(M_PI/2 - angle);
 
 	if (!callback(eyeX + sceneBounds.width/2, 0.0, eyeZ + sceneBounds.length/2)){
 		eye.x = eyeX;
