@@ -93,7 +93,6 @@ void MainWindow::PublicConnects()
 }
 
 void MainWindow::rotateElement(){
-	std::cout << "MainWindow::rotateElement()" << std::endl;
 	ui->painelGL->rotateSolid(ui->spinBoxRotation->value());
 }
 
@@ -106,7 +105,6 @@ void MainWindow::positionCameraByMouse(){
 }
 
 void MainWindow::positionCamera(){
-	std::cout << "MainWindow::positionCamera()" << std::endl;
 	float x = ui->spinBoxCameraX->value();
 	float y = ui->spinBoxCameraY->value();
 	float z = ui->spinBoxCameraZ->value();
@@ -290,11 +288,22 @@ void MainWindow::novoElemento(int index)
 		ui->spinBoxY->setValue(DEFAULT_GAVETEIRO_Y);
 		ui->spinBoxZ->setValue(DEFAULT_GAVETEIRO_Z);	
 	}
+	else if(index == 5)
+	{
+		ui->spinBoxBlue->setValue(DEFAULT_ARMARIO_BLUE);
+		ui->spinBoxGreen->setValue(DEFAULT_ARMARIO_GREEN);
+		ui->spinBoxH->setValue(DEFAULT_ARMARIO_HEIGHT);
+		ui->spinBoxL->setValue(DEFAULT_ARMARIO_LENGTH);
+		ui->spinBoxRed->setValue(DEFAULT_ARMARIO_RED);
+		ui->spinBoxW->setValue(DEFAULT_ARMARIO_WIDTH);
+		ui->spinBoxX->setValue(DEFAULT_ARMARIO_X);
+		ui->spinBoxY->setValue(DEFAULT_ARMARIO_Y);
+		ui->spinBoxZ->setValue(DEFAULT_ARMARIO_Z);
+	}
 
 }
 
 void MainWindow::updatePositionSpinBox(float x, float y, float z){
-	std::cout << "MainWindow::updatePositionSpinBox(float x, float y, float z)" << std::endl;
 	ui->spinBoxX->setValue(x);
 	ui->spinBoxY->setValue(y);
 	ui->spinBoxZ->setValue(z);

@@ -25,9 +25,8 @@ void setupLight(){
     GLfloat light_diffuse[] = {1.5,1.5,1.5,1.0};
     GLfloat light_specular[] = {1.5,1.5,1.5,1.0};
     GLfloat light_model_ambient[] = {0.2,0.2,0.2,1.0};
-    GLfloat light_position[] = { 0.5, 1.0, 0.5, 0.0 };
+    GLfloat light_position[] = { 0.5, 1.0, 0.5, 00 };
 
-    glClearColor (0.0, 0.0, 0.0, 0.0);
     glEnable(GL_NORMALIZE);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
@@ -54,7 +53,7 @@ void initDefaultScene(){
     scene.setBounds(300,300,300);
     // editor.startEditing();
     // editor.createSolid(SOLID_TYPE_GENERIC,0,0,0,100,70,50); 
-    // editor.finalize();
+    // editor.finalize();]
 }
 
 MeuPainelOpenGL::MeuPainelOpenGL(QWidget *parent) :
@@ -163,6 +162,8 @@ void MeuPainelOpenGL::initializeGL()
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
+
+    setupLight();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

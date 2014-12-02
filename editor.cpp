@@ -91,6 +91,8 @@ void Editor::createSolid(SolidType t, float w, float h, float l){
 		activeSolid = new Chair(0,0,0,w,h,l);
 	else if (t == SOLID_TYPE_DRAWER)
 		activeSolid = new Drawer(0,0,0,w,h,l);
+	else if (t == SOLID_TYPE_DRESSER)
+		activeSolid = new Dresser(0,0,0,w,h,l);
 
 	solidList.push_back(activeSolid);
 	scene.addSolid(activeSolid);

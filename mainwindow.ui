@@ -592,6 +592,11 @@
         <string>Gaveteiro</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Armário</string>
+       </property>
+      </item>
      </widget>
      <widget class="QLabel" name="label_7">
       <property name="geometry">
@@ -701,7 +706,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>480</y>
+        <y>470</y>
         <width>211</width>
         <height>21</height>
        </rect>
@@ -714,7 +719,7 @@
       <property name="geometry">
        <rect>
         <x>210</x>
-        <y>480</y>
+        <y>470</y>
         <width>61</width>
         <height>21</height>
        </rect>

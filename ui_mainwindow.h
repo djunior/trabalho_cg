@@ -302,10 +302,10 @@ public:
         adicionar->setGeometry(QRect(20, 510, 251, 27));
         label_21 = new QLabel(tab_2);
         label_21->setObjectName(QStringLiteral("label_21"));
-        label_21->setGeometry(QRect(10, 480, 211, 21));
+        label_21->setGeometry(QRect(10, 470, 211, 21));
         spinBoxRotation = new QSpinBox(tab_2);
         spinBoxRotation->setObjectName(QStringLiteral("spinBoxRotation"));
-        spinBoxRotation->setGeometry(QRect(210, 480, 61, 21));
+        spinBoxRotation->setGeometry(QRect(210, 470, 61, 21));
         spinBoxRotation->setMaximum(360);
         spinBoxRotation->setSingleStep(90);
         tabWidget->addTab(tab_2, QString());
@@ -416,6 +416,7 @@ public:
          << QApplication::translate("MainWindow", "Cama", 0)
          << QApplication::translate("MainWindow", "Cadeira", 0)
          << QApplication::translate("MainWindow", "Gaveteiro", 0)
+         << QApplication::translate("MainWindow", "Arm\303\241rio", 0)
         );
         label_7->setText(QApplication::translate("MainWindow", "Posi\303\247\303\243o :", 0));
         label_8->setText(QApplication::translate("MainWindow", "Dimens\303\243o :", 0));

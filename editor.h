@@ -15,6 +15,7 @@
 #include "bed.h"
 #include "chair.h"
 #include "drawer.h"
+#include "dresser.h"
 
 class Editor{
 private:

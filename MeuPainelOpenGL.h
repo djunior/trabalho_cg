@@ -41,6 +41,16 @@
 #define DEFAULT_GAVETEIRO_WIDTH			40
 #define DEFAULT_GAVETEIRO_LENGTH		40
 
+#define DEFAULT_ARMARIO_BLUE		255
+#define DEFAULT_ARMARIO_RED			255
+#define DEFAULT_ARMARIO_GREEN		255
+#define DEFAULT_ARMARIO_X			0.0
+#define DEFAULT_ARMARIO_Y			0.0
+#define DEFAULT_ARMARIO_Z			0.0
+#define DEFAULT_ARMARIO_HEIGHT		200
+#define DEFAULT_ARMARIO_WIDTH		40
+#define DEFAULT_ARMARIO_LENGTH		80
+
 #ifdef _WIN32
 #include "C:\freeglut\include\GL\freeglut.h"
 #endif
@@ -65,8 +75,6 @@ using namespace std;
 #include "scene.h"
 #include "editor.h"
 #include "textureHandler.h"
-#include "table.h"
-#include "chair.h"
 
 #include <QMouseEvent>
 #include <QTimer>
